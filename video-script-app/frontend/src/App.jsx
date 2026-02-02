@@ -1,4 +1,4 @@
-// Build Trigger: Gemini 2.0 Flash Update
+// Build Trigger: Cyber Blue Ultra
 import { useState, useRef } from 'react'
 import './App.css'
 import ReactMarkdown from 'react-markdown'
@@ -58,10 +58,9 @@ function App() {
           <h1>CLIPOOOR</h1>
         </div>
         <div className="status-bits">
-          TRANSCRIPT_PROCESSOR_V3.0<br />
+          TRANSCRIPT_PROCESSOR_V4.0<br />
           MODEL: GEMINI-2.0-FLASH<br />
-          CLIP_TARGET: 60s // ENCODING: UTF-8<br />
-          NOISE_FLOOR: -45db
+          CLIP_TARGET: 60s // ENCODING: UTF-8
         </div>
       </header>
 
@@ -80,33 +79,33 @@ function App() {
               {file ? (
                 <div className="filename">{file.name}</div>
               ) : (
-                <p>DROP TRANSCRIPT HERE<br />(OR CLICK TO BROWSE)</p>
+                <p>READY FOR SIGNAL...<br />UPLOAD A TRANSCRIPT TO COMMENCE ANALYSIS.</p>
               )}
             </div>
           </div>
 
           <div className="glass-panel">
-            <div className="panel-label">PROCESSING</div>
+            <div className="panel-label">PROCESSING_MODULE</div>
             <button
               className="btn-viral"
               onClick={handleUpload}
               disabled={loading || !file}
             >
-              {loading ? 'ANALYZING...' : 'EXTRACT VIRAL CLIPS'}
+              {loading ? 'DETERMINING...' : 'EXTRACT VIRAL CLIPS'}
             </button>
-            <p style={{ marginTop: '10px', fontSize: '0.65rem', color: '#666', textAlign: 'center' }}>
+            <p style={{ marginTop: '15px', fontFamily: 'Space Mono', fontSize: '0.6rem', color: '#444', textAlign: 'center' }}>
               REDUNDANCY CHECK: ACTIVE // BUFFER: CLEAR
             </p>
           </div>
 
           <div className="glass-panel">
-            <div className="panel-label">SYSTEM METADATA</div>
-            <ul className="metadata-list">
-              <li>SCANNING FOR "GOLDEN NUGGETS"</li>
-              <li>DETECTING CURIOSITY GAPS</li>
-              <li>SCORING VIRAL POTENTIAL</li>
-              <li>GENERATING NARRATION INTROS</li>
-              <li>VERIFYING TIMESTAMPS...</li>
+            <div className="panel-label">SYSTEM_CORE</div>
+            <ul className="metadata-list" style={{ listStyle: 'none', fontFamily: 'Space Mono', fontSize: '0.7rem', color: '#555' }}>
+              <li style={{ marginBottom: '10px' }}>&gt; SCANNING FOR "GOLDEN NUGGETS"</li>
+              <li style={{ marginBottom: '10px' }}>&gt; DETECTING CURIOSITY GAPS</li>
+              <li style={{ marginBottom: '10px' }}>&gt; SCORING VIRAL POTENTIAL</li>
+              <li style={{ marginBottom: '10px' }}>&gt; CALIBRATING STORYTELLER AI</li>
+              <li style={{ marginBottom: '10px' }}>&gt; VERIFYING TIMESTAMPS...</li>
             </ul>
           </div>
         </aside>
@@ -114,24 +113,27 @@ function App() {
         <section className="report-panel">
           {analysis ? (
             <div className="report-card">
-              <div className="panel-label">[ FINAL REPORT ]</div>
+              <div className="panel-label">[ FINAL_ANALYTICS_REPORT ]</div>
               <div className="report-content">
                 <ReactMarkdown>{analysis}</ReactMarkdown>
               </div>
             </div>
           ) : (
             <div className="empty-state">
-              <div className="panel-label">AWAITING FEED...</div>
-              <p>UPLOAD A TRANSCRIPT TO BEGIN ANALYTICS</p>
+              <p>NO SIGNAL DETECTED</p>
             </div>
           )}
         </section>
       </main>
 
+      <footer className="app-footer">
+        <div>© 2026 CLIPOOOR DIGITAL RECON</div>
+        <div>LAT: 37.7749° N, LONG: 122.4194° W</div>
+      </footer>
+
       {loading && (
-        <div className="processing-status">
-          <div className="rec-pulse"></div>
-          <span>LIVE PROCESSING IN PROGRESS // SYNCING WITH GEMINI-2.0</span>
+        <div className="processing-status" style={{ position: 'fixed', bottom: '60px', right: '40px', background: '#00f2ff', color: '#000', padding: '10px 20px', fontFamily: 'Space Mono', fontWeight: 'bold' }}>
+          <span>PROCESSING DATA STREAMS...</span>
         </div>
       )}
     </div>
