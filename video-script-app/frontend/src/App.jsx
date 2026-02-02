@@ -1,17 +1,16 @@
-// FORCE REBUILD 1
-// Build Trigger: Gemini 1.5 Flash Update
+// Build Trigger: Gemini 2.0 Flash Update
 import { useState, useRef } from 'react'
 import './App.css'
 import ReactMarkdown from 'react-markdown'
 
 function App() {
   const [file, setFile] = useState(null)
-  const [analysis, setAnalysis] = useState('')
   const [loading, setLoading] = useState(false)
+  const [analysis, setAnalysis] = useState('')
   const fileInputRef = useRef(null)
 
-  const handleFileChange = (e) => {
-    if (e.target.files) {
+  const onFileChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
       setFile(e.target.files[0])
     }
   }
@@ -69,86 +68,72 @@ function App() {
       <main className="main-content">
         <aside className="control-sidebar">
           <div className="glass-panel">
-            <div className="panel-label">SOURCE INPUT (ACTIVE)</div>
+            <div className="panel-label">SOURCE INPUT</div>
             <div className="file-drop-zone" onClick={triggerFileInput}>
               <input
                 type="file"
-                accept=".txt,.md"
-                onChange={handleFileChange}
-                className="hidden-input"
                 ref={fileInputRef}
+                style={{ display: 'none' }}
+                onChange={onFileChange}
+                accept=".txt"
               />
-              <p>
-                {file ? (
-                  <span style={{ color: 'var(--accent)' }}>{file.name}</span>
-                ) : (
-                  "DROP TRANSCRIPT OR CLICK TO BROWSE"
-                )}
-              </p>
+              {file ? (
+                <div className="filename">{file.name}</div>
+              ) : (
+                <p>DROP TRANSCRIPT HERE<br />(OR CLICK TO BROWSE)</p>
+              )}
             </div>
           </div>
 
           <div className="glass-panel">
-            <div className="panel-label">Processing</div>
+            <div className="panel-label">PROCESSING</div>
             <button
+              className="btn-viral"
               onClick={handleUpload}
-              disabled={!file || loading}
-              className="action-btn"
+              disabled={loading || !file}
             >
               {loading ? 'ANALYZING...' : 'EXTRACT VIRAL CLIPS'}
             </button>
-            <div style={{ marginTop: '1rem', fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: 'var(--text-dim)', textAlign: 'center' }}>
+            <p style={{ marginTop: '10px', fontSize: '0.65rem', color: '#666', textAlign: 'center' }}>
               REDUNDANCY CHECK: ACTIVE // BUFFER: CLEAR
-            </div>
+            </p>
           </div>
 
-          <div className="glass-panel" style={{ flexGrow: 1 }}>
-            <div className="panel-label">System Metadata</div>
-            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-dim)' }}>
-              &gt; SCANNING FOR "GOLDEN NUGGETS"<br />
-              &gt; DETECTING CURIOSITY GAPS<br />
-              &gt; SCORING VIRAL POTENTIAL<br />
-              &gt; GENERATING NARRATION INTROS<br />
-              &gt; VERIFYING TIMESTAMPS...
-            </div>
+          <div className="glass-panel">
+            <div className="panel-label">SYSTEM METADATA</div>
+            <ul className="metadata-list">
+              <li>SCANNING FOR "GOLDEN NUGGETS"</li>
+              <li>DETECTING CURIOSITY GAPS</li>
+              <li>SCORING VIRAL POTENTIAL</li>
+              <li>GENERATING NARRATION INTROS</li>
+              <li>VERIFYING TIMESTAMPS...</li>
+            </ul>
           </div>
         </aside>
 
-        <section className="output-area">
-          {loading && (
-            <div className="loading-overlay">
-              <div className="spinner"></div>
-              <p style={{ marginTop: '2rem', fontFamily: 'var(--font-mono)', fontSize: '0.8rem', letterSpacing: '2px' }}>
-                PROCESSING STREAM...
-              </p>
-            </div>
-          )}
-
-          {!analysis && !loading && (
-            <div className="empty-state">
-              READY FOR SIGNAL... UPLOAD A TRANSCRIPT TO COMMENCE ANALYSIS.
-            </div>
-          )}
-
-          {analysis && (
-            <div className="analysis-container markdown-body">
-              <div className="glass-panel" style={{ marginBottom: '2rem', background: 'var(--accent-soft)', border: '1px solid var(--accent)' }}>
-                <div className="panel-label" style={{ color: '#000', background: 'var(--accent)', padding: '0.2rem 0.5rem', width: 'fit-content' }}>
-                  Final Report
-                </div>
-                <div style={{ marginTop: '1.5rem' }}>
-                  <ReactMarkdown>{analysis}</ReactMarkdown>
-                </div>
+        <section className="report-panel">
+          {analysis ? (
+            <div className="report-card">
+              <div className="panel-label">[ FINAL REPORT ]</div>
+              <div className="report-content">
+                <ReactMarkdown>{analysis}</ReactMarkdown>
               </div>
+            </div>
+          ) : (
+            <div className="empty-state">
+              <div className="panel-label">AWAITING FEED...</div>
+              <p>UPLOAD A TRANSCRIPT TO BEGIN ANALYTICS</p>
             </div>
           )}
         </section>
       </main>
 
-      <footer style={{ marginTop: '4rem', padding: '1rem 0', borderTop: '1px solid var(--border)', fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: 'var(--text-dim)', display: 'flex', justifyContent: 'space-between' }}>
-        <span>© 2026 CLIPOOOR DIGITAL RECON</span>
-        <span>LAT: 37.7749° N, LONG: 122.4194° W</span>
-      </footer>
+      {loading && (
+        <div className="processing-status">
+          <div className="rec-pulse"></div>
+          <span>LIVE PROCESSING IN PROGRESS // SYNCING WITH GEMINI-2.0</span>
+        </div>
+      )}
     </div>
   )
 }
