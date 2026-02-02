@@ -1,176 +1,242 @@
-// BUILD_ID: 2026-02-02_16:05_AMBER_HISTORY
 import { useState, useRef, useEffect } from 'react'
 import './App.css'
 import ReactMarkdown from 'react-markdown'
+import nexusAvatar from './assets/nexus_avatar.png'
+
+const MODELS = [
+  { id: 'openai/gpt-oss-20b:free', name: 'GPT-OSS 20B // STRATEGIC_REASONING' },
+  { id: 'deepseek/deepseek-r1-0528:free', name: 'DEEPSEEK R1 // NARRATIVE_UNIT' },
+  { id: 'google/gemini-3-flash', name: 'GEMINI 3 FLASH // KINETIC_SPEED' },
+]
+
+const INTEL_DATA = [
+  { label: "AI_RECON", text: "Runway Gen-3 Alpha is now supporting advanced camera control for high-fidelity backgrounds." },
+  { label: "VFX_RESOURCES", text: "ProductionCrate has a new library of tactical overlays and grain textures perfect for Noir edits." },
+  { label: "SFX_ANCHOR", text: "Check Freesound.org for industrial glitch impacts and 'deep-thud' swooshes." },
+  { label: "STRATEGY_TIP", text: "Engagement peaks when Verbatim Anchors are used as high-contrast kinetic text overlays." },
+  { label: "ASSET_SYNC", text: "ElevenLabs Voice Isolator is now the gold standard for cleaning transcript audio." }
+]
 
 function App() {
   const [file, setFile] = useState(null)
   const [loading, setLoading] = useState(false)
-  const [analysis, setAnalysis] = useState('')
+  const [clips, setClips] = useState([])
+  const [expandedId, setExpandedId] = useState(null)
   const [history, setHistory] = useState([])
+  const [isDragging, setIsDragging] = useState(false)
+  const [selectedModel, setSelectedModel] = useState(MODELS[0].id)
+  const [intelIndex, setIntelIndex] = useState(0)
   const fileInputRef = useRef(null)
 
-  // Load history from localStorage on mount
   useEffect(() => {
-    const savedHistory = localStorage.getItem('clipooor_history')
+    const savedHistory = localStorage.getItem('clipooor_history_v7')
     if (savedHistory) {
-      try {
-        setHistory(JSON.parse(savedHistory))
-      } catch (e) {
-        console.error("Failed to parse history", e)
-      }
+      try { setHistory(JSON.parse(savedHistory)) } catch (e) { console.error("History parse fail", e) }
     }
   }, [])
 
-  // Save history whenever it changes
   useEffect(() => {
-    localStorage.setItem('clipooor_history', JSON.stringify(history))
+    const timer = setInterval(() => {
+      setIntelIndex(prev => (prev + 1) % INTEL_DATA.length)
+    }, 8000)
+    return () => clearInterval(timer)
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem('clipooor_history_v7', JSON.stringify(history))
   }, [history])
 
   const onFileChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      setFile(e.target.files[0])
-    }
-  }
-
-  const triggerFileInput = () => {
-    fileInputRef.current.click()
+    if (e.target.files && e.target.files[0]) { setFile(e.target.files[0]) }
+    e.target.value = ''
   }
 
   const handleUpload = async () => {
     if (!file) return
-
     setLoading(true)
+    setClips([])
     const formData = new FormData()
     formData.append('file', file)
+    formData.append('model', selectedModel)
 
     try {
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
-      const response = await fetch(`${apiUrl}/analyze`, {
-        method: 'POST',
-        body: formData,
-      })
-
+      const response = await fetch(`${apiUrl}/analyze`, { method: 'POST', body: formData })
       const data = await response.json()
-      if (response.ok) {
-        setAnalysis(data.analysis)
-
-        // Save to History
-        const newEntry = {
-          id: Date.now(),
-          timestamp: new Date().toLocaleString(),
-          filename: file.name,
-          content: data.analysis
-        }
-        setHistory(prev => [newEntry, ...prev].slice(0, 20)) // Keep last 20
+      if (response.ok && data.clips) {
+        setClips(data.clips)
+        setHistory(prev => [{ id: Date.now(), timestamp: new Date().toLocaleTimeString(), filename: file.name, clips: data.clips }, ...prev].slice(0, 15))
       } else {
-        setAnalysis(`Server Error: ${data.detail || 'Unknown server error'}`)
+        alert(data.detail || "Strategic Analysis Fail")
       }
-    } catch (error) {
-      console.error('Upload error:', error);
-      setAnalysis(`Connection Error: ${error.message}`)
+    } catch (e) {
+      alert(`Network Error: ${e.message}`)
     } finally {
       setLoading(false)
     }
   }
 
-  const clearHistory = () => {
-    if (window.confirm("Delete all saved reports?")) {
-      setHistory([])
-      setAnalysis('')
-    }
-  }
-
   return (
     <div className="app-wrapper">
+      {loading && <div className="processing-status" />}
+
       <header className="header-nav">
         <div className="logo-group">
-          <h1>CLIPOOOR</h1>
+          <h1>CLIPR</h1>
         </div>
         <div className="status-bits">
-          TRANSCRIPT_PROCESSOR_V4.2<br />
-          MODEL: GPT-OSS-120B (OPENROUTER)<br />
-          CLIP_TARGET: 60s // HISTORY: ACTIVE
+          ENGINE: CLIPR_NOIR_SYSTEM_V7.2<br />
+          UNIT: {MODELS.find(m => m.id === selectedModel)?.name.split(' // ')[0]}<br />
+          STATUS: {loading ? 'DECRYPTING...' : 'READY_SIGNAL'}
         </div>
       </header>
 
       <main className="main-content">
         <aside className="control-sidebar">
           <div className="glass-panel">
-            <div className="panel-label">SOURCE INPUT</div>
-            <div className="file-drop-zone" onClick={triggerFileInput}>
-              <input
-                type="file"
-                ref={fileInputRef}
-                className="hidden-input"
-                onChange={onFileChange}
-                accept=".txt"
-              />
-              {file ? (
-                <div className="filename">{file.name}</div>
-              ) : (
-                <p>READY_FOR_SIGNAL...<br />UPLOAD TRANSCRIPT</p>
-              )}
+            <div className="panel-label">INTELLIGENCE_LAYER</div>
+            <select
+              className="model-select"
+              value={selectedModel}
+              onChange={(e) => setSelectedModel(e.target.value)}
+            >
+              {MODELS.map(model => (
+                <option key={model.id} value={model.id}>{model.name}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className="glass-panel">
+            <div className="panel-label">DATA_INPUT</div>
+            <div
+              className={`file-drop-zone ${isDragging ? 'dragging' : ''}`}
+              onClick={() => fileInputRef.current.click()}
+              onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+              onDragLeave={() => setIsDragging(false)}
+              onDrop={(e) => { e.preventDefault(); setIsDragging(false); setFile(e.dataTransfer.files[0]); }}
+            >
+              <input type="file" ref={fileInputRef} className="hidden-input" onChange={onFileChange} style={{ display: 'none' }} />
+              {file ? <div className="filename">{file.name}</div> : <div className="p">DRAG_TRANSCRIPT_HERE</div>}
             </div>
           </div>
 
           <div className="glass-panel">
-            <div className="panel-label">EXECUTION</div>
             <button className="action-btn" onClick={handleUpload} disabled={loading || !file}>
-              {loading ? 'DETERMINING...' : 'EXTRACT VIRAL CLIPS'}
+              {loading ? 'REASONING...' : 'START EXTRACTION'}
             </button>
           </div>
 
-          <div className="glass-panel history-panel">
-            <div className="panel-label">
-              <span>MISSION_LOG</span>
-              <button className="clear-btn" onClick={clearHistory}>CLEAR</button>
-            </div>
-            <div className="history-list">
-              {history.length === 0 ? (
-                <div className="history-empty">NO RECENT MISSIONS</div>
-              ) : (
-                history.map(item => (
-                  <div
-                    key={item.id}
-                    className={`history-item ${analysis === item.content ? 'active' : ''}`}
-                    onClick={() => setAnalysis(item.content)}
-                  >
+          {history.length > 0 && (
+            <div className="glass-panel history-panel">
+              <div className="panel-label">MISSION_RECORDS</div>
+              <div className="history-list">
+                {history.map(item => (
+                  <div key={item.id} className="history-item" onClick={() => setClips(item.clips)}>
                     <div className="history-filename">{item.filename}</div>
                     <div className="history-date">{item.timestamp}</div>
                   </div>
-                ))
-              )}
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </aside>
 
         <section className="report-panel">
-          {analysis ? (
-            <div className="report-card">
-              <div className="panel-label">[ FINAL_ANALYTICS_REPORT ]</div>
-              <div className="report-content">
-                <ReactMarkdown>{analysis}</ReactMarkdown>
-              </div>
+          {clips.length > 0 ? (
+            <div className="accordion-container">
+              {clips.map((clip, index) => (
+                <div key={clip.id} className={`accordion-item ${expandedId === clip.id ? 'expanded' : ''}`}>
+                  <div className="accordion-header" onClick={() => setExpandedId(expandedId === clip.id ? null : clip.id)}>
+                    <div className="clip-rank">0{index + 1}</div>
+                    <div className="clip-info">
+                      <div className="clip-title">{clip.title}</div>
+                      <div className="clip-sub">TSC: {clip.timestamp} // {clip.strategy?.hook_type?.toUpperCase()}</div>
+                    </div>
+                    <div className="clip-score">
+                      <span className="label">VIRAL_LOAD</span>
+                      <span className="value">{clip.viral_score}</span>
+                    </div>
+                  </div>
+
+                  {expandedId === clip.id && (
+                    <div className="accordion-content">
+                      <div className="strategy-suite">
+                        <div className="strategy-tag">REASONING_RECON: {clip.strategy?.psychological_trigger}</div>
+                        <p className="strategy-logic">{clip.strategy?.logic}</p>
+                      </div>
+
+                      <div className="clip-grid">
+                        <div className="clip-section">
+                          <div className="section-label">NARRATIVE DIRECTIVE</div>
+                          <div className="script-container">
+                            <i className="context-text">{clip.narration_intro?.context}</i>
+                            <div className="script-text"><ReactMarkdown>{clip.narration_intro?.script}</ReactMarkdown></div>
+                          </div>
+                        </div>
+
+                        <div className="clip-section">
+                          <div className="section-label">SIGNAL_VARIANTS</div>
+                          <div className="variants-grid">
+                            {clip.variants?.map((variant, i) => (
+                              <div key={i} className="variant-card">
+                                <span className="variant-type">[{variant.type.toUpperCase()}]</span>
+                                <span className="variant-text"><ReactMarkdown>{variant.text}</ReactMarkdown></span>
+                              </div>
+                            ))}
+                            {/* Fallback for old data */}
+                            {!clip.variants && clip.hook_line && (
+                              <div className="variant-card">
+                                <span className="variant-type">[PRIMARY_SIGNAL]</span>
+                                <span className="variant-text"><ReactMarkdown>{clip.hook_line}</ReactMarkdown></span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="clip-section">
+                          <div className="section-label">VERBATIM_ANCHORS (FOR_EDITING)</div>
+                          {clip.key_moments?.map((m, i) => (
+                            <div key={i} className="moment-row">
+                              <span className="m-time">{m.time}</span>
+                              <span className="m-text"><ReactMarkdown>{m.text}</ReactMarkdown></span>
+                            </div>
+                          ))}
+                        </div>
+
+                        <div className="clip-section">
+                          <div className="section-label">EDITORIAL_VFX_LOG</div>
+                          <p className="edit-text">{clip.recommended_edit}</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           ) : (
             <div className="empty-state">
-              <p>NO SIGNAL</p>
+              <p>{loading ? 'PERFORMING_STRATEGIC_SCAN...' : 'AWAITING_INPUT_SIGNAL'}</p>
             </div>
           )}
         </section>
       </main>
 
       <footer className="app-footer">
-        <div>© 2026 CLIPOOOR DIGITAL RECON</div>
-        <div>LAT: 37.7749° N, LONG: 122.4194° W</div>
+        <div>DESIGNED BY JITZ // {new Date().getFullYear()} // KINETIC_NOIR</div>
+        <div>IP_ORIGIN: 0.0.0.0 // SECTOR_88</div>
       </footer>
 
-      {loading && (
-        <div className="processing-status">
-          <span>UPLOADING_DATA_STREAM...</span>
+      {/* FLOATING NEXUS UNIT */}
+      <div className="nexus-floating-unit">
+        <div className="nexus-intel-card">
+          <div className="intel-tag">{INTEL_DATA[intelIndex].label}</div>
+          <div className="intel-text">{INTEL_DATA[intelIndex].text}</div>
         </div>
-      )}
+        <div className="nexus-orb-container">
+          <img src={nexusAvatar} alt="NEXUS" className="nexus-orb" />
+          <div className="pulse-ring"></div>
+        </div>
+      </div>
     </div>
   )
 }
