@@ -63,8 +63,8 @@ async def analyze_transcript(file: UploadFile = File(...)):
         content = await file.read()
         transcript_text = content.decode("utf-8")
         
-        # Call Gemini (using flash for speed and to avoid Vercel timeouts if possible)
-        model = genai.GenerativeModel('gemini-1.5-flash')
+        # Call Gemini (using 2.0 flash as 1.5 was not found)
+        model = genai.GenerativeModel('gemini-2.0-flash')
         response = model.generate_content(f"{SYSTEM_PROMPT}\n\nTRANSCRIPT:\n{transcript_text}")
         
         return {"analysis": response.text}

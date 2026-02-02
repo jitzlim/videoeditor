@@ -60,7 +60,7 @@ function App() {
         </div>
         <div className="status-bits">
           TRANSCRIPT_PROCESSOR_V3.0<br />
-          MODEL: GEMINI-1.5-FLASH<br />
+          MODEL: GEMINI-2.0-FLASH<br />
           ENCODING: UTF-8 // NOISE_FLOOR: -45db
         </div>
       </header>
