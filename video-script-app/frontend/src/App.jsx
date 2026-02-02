@@ -1,4 +1,4 @@
-// Build Trigger: Cyber Blue Ultra
+// BUILD_ID: 2026-02-02_15:45_AMBER_FINAL
 import { useState, useRef } from 'react'
 import './App.css'
 import ReactMarkdown from 'react-markdown'
@@ -43,7 +43,7 @@ function App() {
       console.error('Upload error:', error);
       let errorMessage = `Connection Error: ${error.message}`;
       if (error.message.includes('Failed to fetch')) {
-        errorMessage += " (This often happens if the VITE_API_URL is wrong, or the backend timed out after 10s on Vercel Hobby tier)";
+        errorMessage += " (Check Vercel Environment Variable VITE_API_URL)";
       }
       setAnalysis(errorMessage)
     } finally {
@@ -60,7 +60,7 @@ function App() {
         <div className="status-bits">
           TRANSCRIPT_PROCESSOR_V4.0<br />
           MODEL: GEMINI-2.0-FLASH<br />
-          CLIP_TARGET: 60s // ENCODING: UTF-8
+          CLIP_TARGET: 60s // STATUS: READY
         </div>
       </header>
 
@@ -72,26 +72,26 @@ function App() {
               <input
                 type="file"
                 ref={fileInputRef}
-                style={{ display: 'none' }}
+                className="hidden-input"
                 onChange={onFileChange}
                 accept=".txt"
               />
               {file ? (
                 <div className="filename">{file.name}</div>
               ) : (
-                <p>READY FOR SIGNAL...<br />UPLOAD A TRANSCRIPT TO COMMENCE ANALYSIS.</p>
+                <p>READY_FOR_SIGNAL...<br />CLICK TO UPLOAD TRANSCRIPT</p>
               )}
             </div>
           </div>
 
           <div className="glass-panel">
-            <div className="panel-label">PROCESSING_MODULE</div>
+            <div className="panel-label">EXECUTION_MODULE</div>
             <button
-              className="btn-viral"
+              className="action-btn"
               onClick={handleUpload}
               disabled={loading || !file}
             >
-              {loading ? 'DETERMINING...' : 'EXTRACT VIRAL CLIPS'}
+              {loading ? 'ANALYZING...' : 'EXTRACT VIRAL CLIPS'}
             </button>
             <p style={{ marginTop: '15px', fontFamily: 'Space Mono', fontSize: '0.6rem', color: '#444', textAlign: 'center' }}>
               REDUNDANCY CHECK: ACTIVE // BUFFER: CLEAR
@@ -100,7 +100,7 @@ function App() {
 
           <div className="glass-panel">
             <div className="panel-label">SYSTEM_CORE</div>
-            <ul className="metadata-list" style={{ listStyle: 'none', fontFamily: 'Space Mono', fontSize: '0.7rem', color: '#555' }}>
+            <ul className="metadata-list" style={{ listStyle: 'none', fontFamily: 'Space Mono', fontSize: '0.7rem', color: '#555', padding: 0 }}>
               <li style={{ marginBottom: '10px' }}>&gt; SCANNING FOR "GOLDEN NUGGETS"</li>
               <li style={{ marginBottom: '10px' }}>&gt; DETECTING CURIOSITY GAPS</li>
               <li style={{ marginBottom: '10px' }}>&gt; SCORING VIRAL POTENTIAL</li>
@@ -120,7 +120,7 @@ function App() {
             </div>
           ) : (
             <div className="empty-state">
-              <p>NO SIGNAL DETECTED</p>
+              <p>NO SIGNAL</p>
             </div>
           )}
         </section>
@@ -132,8 +132,8 @@ function App() {
       </footer>
 
       {loading && (
-        <div className="processing-status" style={{ position: 'fixed', bottom: '60px', right: '40px', background: '#00f2ff', color: '#000', padding: '10px 20px', fontFamily: 'Space Mono', fontWeight: 'bold' }}>
-          <span>PROCESSING DATA STREAMS...</span>
+        <div className="processing-status">
+          <span>UPLOADING_DATA_STREAM...</span>
         </div>
       )}
     </div>
