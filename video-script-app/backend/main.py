@@ -31,7 +31,7 @@ For each interesting section you find, output the following in Markdown:
 
 ### **Clip [N]: [Title of Clip]**
 -   **Timestamp**: `MM:SS` to `MM:SS`
--   **Duration**: ~[Approx Duration]
+-   **Duration**: ~60 seconds
 -   **Viral Score**: [1-10]/10 (Reasoning)
 -   **Narration Intro (Script for You)**:
     *   *Context*: [The high-stakes problem or setup this clip addresses]
@@ -49,9 +49,10 @@ For each interesting section you find, output the following in Markdown:
 
 ### INSTRUCTIONS
 1. Analyze the transcript for "Golden Nuggets", High Emotion, or Controversy.
-2. Select the top 3-5 clips.
-3. Ensure timestamps are accurate based on the input text.
-4. STRICTLY NO ELLIPSES (...) in the Key Moments text. Provide full context.
+2. Select the top 3-5 clips, targeting segments that are approximately 60 seconds long to allow for deeper storytelling.
+3. If a single point is too short, look for the surrounding context or related follow-up points to build a full 1-minute narrative arc.
+4. Ensure timestamps are accurate based on the input text.
+5. STRICTLY NO ELLIPSES (...) in the Key Moments text. Provide full context.
 """
 
 @app.post("/analyze")
