@@ -17,3 +17,4 @@ dist-ssr/
 video-script-app/backend/.env
 video-script-app/backend/config_api_key.txt
 video-script-app/backend/config_openrouter_key.txt
+._*
