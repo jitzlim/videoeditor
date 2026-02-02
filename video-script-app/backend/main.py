@@ -1,7 +1,7 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import os
-import google.generativeai as genai
+from openai import OpenAI
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -17,10 +17,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Configure Gemini API
-api_key = os.getenv("GEMINI_API_KEY")
-if api_key:
-    genai.configure(api_key=api_key)
+# Configure OpenRouter via OpenAI client
+# Note: Using the free OSS model as requested
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
+client = OpenAI(
+    base_url="https://openrouter.ai/api/v1",
+    api_key=OPENROUTER_API_KEY,
+)
 
 SYSTEM_PROMPT = """
 You are an expert Video Script Writer and Editor. 
@@ -57,18 +60,28 @@ For each interesting section you find, output the following in Markdown:
 
 @app.post("/analyze")
 async def analyze_transcript(file: UploadFile = File(...)):
-    if not api_key:
-        raise HTTPException(status_code=500, detail="GEMINI_API_KEY not configured in .env")
+    if not OPENROUTER_API_KEY:
+        raise HTTPException(status_code=500, detail="OPENROUTER_API_KEY not configured in .env")
     
     try:
         content = await file.read()
         transcript_text = content.decode("utf-8")
         
-        # Call Gemini (using 2.0 flash as 1.5 was not found)
-        model = genai.GenerativeModel('gemini-2.0-flash')
-        response = model.generate_content(f"{SYSTEM_PROMPT}\n\nTRANSCRIPT:\n{transcript_text}")
+        # Call OpenRouter
+        response = client.chat.completions.create(
+            extra_headers={
+                "HTTP-Referer": "https://clipooor.vercel.app", # Optional
+                "X-Title": "CLIPOOOR", # Optional
+            },
+            model="openai/gpt-oss-120b:free",
+            messages=[
+                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "user", "content": f"TRANSCRIPT:\n{transcript_text}"}
+            ]
+        )
         
-        return {"analysis": response.text}
+        analysis_text = response.choices[0].message.content
+        return {"analysis": analysis_text}
         
     except Exception as e:
         print(f"Error generating content: {e}")
@@ -76,4 +89,4 @@ async def analyze_transcript(file: UploadFile = File(...)):
 
 @app.get("/")
 def read_root():
-    return {"status": "CLIPOOOR Backend Running (Gemini)"}
+    return {"status": "CLIPOOOR Backend Running (OpenRouter)"}

@@ -88,8 +88,8 @@ function App() {
           <h1>CLIPOOOR</h1>
         </div>
         <div className="status-bits">
-          TRANSCRIPT_PROCESSOR_V4.1<br />
-          MODEL: GEMINI-2.0-FLASH<br />
+          TRANSCRIPT_PROCESSOR_V4.2<br />
+          MODEL: GPT-OSS-120B (OPENROUTER)<br />
           CLIP_TARGET: 60s // HISTORY: ACTIVE
         </div>
       </header>
