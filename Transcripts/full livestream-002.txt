@@ -1,0 +1,464 @@
+00:00:00:00 - 00:01:15:00
+Unknown
+Oh.
+
+00:01:15:02 - 00:01:22:07
+Unknown
+Oh.
+
+00:01:22:09 - 00:02:14:22
+Unknown
+Oh!
+
+00:02:14:24 - 00:02:40:01
+Unknown
+Hey, what is up, everybody? My name is Ryan, on the camera from long. And today, I'm going to be interviewing three different teams from the British American ecosystem. Yeah. Super exciting teams working on the frontier of prediction markets. So, yeah, before we get started, there is, just one more thing. So in previous sessions, we've gone right into founders.
+
+00:02:40:11 - 00:03:02:28
+Unknown
+Today I'd like to talk a little bit about lung. We're a launchpad, and we are currently looking for, founders on the base blockchain, or any EVM chain who are interested in, launching a token. So if that sounds interesting, and if your team is looking for launch token, feel free to reach out to me, at Giga Rahul on X.
+
+00:03:03:00 - 00:03:24:29
+Unknown
+So, let's get right into it. First off, we have George from Function Space. How are you doing today? Hey, Rahul, it's great to be here. It's going good. How are you? I'm doing great, man. I'm glad you're here. So, we can get right into it, man. Function space is doing some really cool stuff.
+
+00:03:25:29 - 00:03:46:12
+Unknown
+Yeah. Tell us about it. Awesome, awesome. Well. Hello, everyone. It's a great pleasure. An honor to be here, with Rahul, at long. So I am, my name is George RSA. I am, research engineer at function space. Today. I am, representing, the team. Most of them are based in Australia, so it's like 3 a.m. for them.
+
+00:03:46:13 - 00:04:08:21
+Unknown
+So I'm very happy that I was able to, join you guys. And from, let's say, the, the research engineering perspective to a little bit more about our function space. So yeah, I'd like to tell you a little bit more about, first of all, the, say, our current vision of the space, the prediction market space and then some of the problems and some of the opportunities for growth we see and how we mean to address them.
+
+00:04:09:09 - 00:04:50:18
+Unknown
+And seize the opportunity to build. So if you start, if we start by looking at the current landscape of prediction markets, through, let's say, an engineering and design lens, our thesis is that right now for, let's say, 99% of prediction market projects you see out there, they are building some sort of application, some sort of, consumer facing product that is a little bit like you know, untrained and untrained casino of sorts, or like a platform for people to, well, speculate, predict exactly, things with their beliefs.
+
+00:04:50:18 - 00:05:09:00
+Unknown
+Right? Yes. But we're not seeing this from the point of view of like necessarily that they are encouraging gambling or anything like that, but more so in terms of like the architectural vices that they are inheriting from this, let's say app or like even casino sports with faith based approach. Let's break it down into like a few categories of where the problems are.
+
+00:05:09:02 - 00:05:28:15
+Unknown
+The first one we see is there's, gatekeeping and centralization behind market creation. So you get a handful of platforms with the sort of like veto or whitelisting, rights or privileges that decide what can be listed because of applications, playing this role of, well, consumer facing apps, they are forced actually to be gatekeepers in a sense.
+
+00:05:28:15 - 00:05:53:11
+Unknown
+Right. And then you have whoever's in charge of product that these, applications, they will get to decide what gets this gets listed and what doesn't. And then this close or this centralization actually prevents a lot of the signal that could be surfaced by prediction markets from, making it out in the open. So let's go through a crazy example, I guess.
+
+00:05:53:13 - 00:06:11:23
+Unknown
+Now imagine like a Dao, for example. But they want to hedge their treasury against a specific supply chain disruption, something like, let's say, a semiconductor shortage that is affecting, either an industry or a partner. Well, this is a valid risk, but maybe it's not the kind of thing that people are thinking of on a day to day basis.
+
+00:06:11:23 - 00:06:28:17
+Unknown
+Right? So you go to a current market leader and to try to list it, it might not gain as much traction because it's not the most vital thing. Right? It might be something very relevant, might be something that surfaces a lot of signal about how it where the world is going, but it's not immediately viral. It's not going to generate clicks by retail.
+
+00:06:28:17 - 00:06:51:23
+Unknown
+And so you have a risk or even like an information, let's say vector that remains on price. And then that sort of capital is going to remain on the sidelines. Yeah. And it doesn't have the liquidity in order to, make the market viable from it. Right. Exactly, exactly. And there's a whole set of problems with that, which is exactly what I'm what I'm leading into next to appreciate the colander.
+
+00:06:51:26 - 00:07:16:02
+Unknown
+Precisely. The next problem with, let's say, even if you were to somehow decentralize or make it more open, how markets get generated, the issue of fragmentation of liquidity and how outcomes are accrued are also a problem in prediction markets. By the way, we're going through a high level overview of the problems. And then we're going to like put them all together into like a single thread of how we see onto the space we're going to be solving them.
+
+00:07:16:05 - 00:07:40:17
+Unknown
+So this is the second we want to touch upon. So when you look at how prediction markets currently work, just like the first, the first problem was was what exactly fragmentation of liquidity. And then the second problem is what? No, the first problem is the gatekeeping and centralization behind market creation. That is something that incentivizes that. They have the centralized, they create the markets, right?
+
+00:07:40:20 - 00:07:59:07
+Unknown
+Correct. And this and this is something that makes a lot of sense when you think about you're dealing with apps for consumers, that have to be gatekeeper somehow. And you're not dealing with really like some sort of like a more underlying or decentralized infrastructure layer, like, for example, a blockchain where anyone can come and build whatever applications they want.
+
+00:07:59:09 - 00:08:29:06
+Unknown
+Just I'm actually can think that some of what we want to do later, but yeah, first of all would be that the, get it in centralized market creation. Yeah. And for the second problem, let's talk about the fragmentation of liquidity and how outcomes tend to be crude when you're dealing with prediction markets. So even with a market does get listed, you'll see, for example, let's say users want to hedge their risk or they want to can bid on information or beliefs about the price of bitcoin, let's say.
+
+00:08:29:06 - 00:08:51:09
+Unknown
+Right. So on current platforms, for the most part, you don't really get an underlying market that talks about the price of Bitcoin as a whole. You get these bunch of buckets like okay we'll between B above 90 K will it be about 95 K. And you get yes. No. Binary outcomes for all of those with the corresponding liquidity fragmentation that ensues this that that making sense so far.
+
+00:08:51:11 - 00:09:15:09
+Unknown
+Right. So you're saying like there aren't arbitrary price distinctions. It's like you get to choose between these, various like, ranges that are pre-selected for you. Exactly. So it's sort of like this binary. Yes. No structure that has been wildly successful with, you know, in common layers like the market and the like, which, is for sure very effective.
+
+00:09:15:09 - 00:09:34:26
+Unknown
+And it has a very strong place and available position for these sort of binary questions. But then this model tries to be like shoehorned in into more complex, let's say, assertions you want to make around the world about the world, such as something like the realization of a continuous variable like the price of bitcoin, right? It's like, where do you draw the lines?
+
+00:09:35:03 - 00:10:00:12
+Unknown
+How do you design these boxes? And then how do you make it expressive enough? Yeah, people from various backgrounds, various levels of technical numerical sophistication to be able to convey the risk or like their rather dour assertions about the world on a single platform. Yeah. So this discretize this capital and what would potentially be a very deep ocean of liquidity that you could tap into.
+
+00:10:00:14 - 00:10:16:13
+Unknown
+And that should exist. Like there's a lot of people who are interested in the price of Bitcoin and want to hedge against it and something like that. Like the risks behind this, it's it's action. Then it's just partition into like a bunch of tiny puddles, leading to like a very bad user experience. And just like a lack of synergy in how the market operates.
+
+00:10:16:19 - 00:10:37:07
+Unknown
+Right. And you can see they are both kind of intertwined when you have like this model of you have a bunch of apps, they are, you have these walled gardens. Everyone is building their own thing, kind of like in a, this coordinated fashion. It sort of naturally leads to this equivalent fragmentation in a sense. Yeah. For sure.
+
+00:10:37:09 - 00:10:57:25
+Unknown
+Well, these are the two of the, I'm curious to hear. So, Yeah. No, let's let's just get right into it. Yeah. Share your screen. Let's take a look at the website to see what you're building to solve this. That sounds great. So, yes, having set up a review of the space, let's move on to like how we see function space, can innovate to resolve some of these points of friction.
+
+00:10:57:27 - 00:11:19:21
+Unknown
+So I'm going to share my screen. I'll leave you with function space, not death. Currently working on the website. There's a lot more to come here. So I would, ask you guys to stay tuned as we, add more, but, hey, information and visuals about what we're doing here and also like on our Twitter as well, research.
+
+00:11:19:24 - 00:11:46:18
+Unknown
+So let's see, I'd like to show some visuals about actually might come to this one later. I'm going to start with the one on the bottom. Yeah. So what function space is. It's a protocol. Which we are aiming to build on chain so that this execution is also quite heavily neutral function space. It's a protocol and a platform that allows other developers to build their own prediction applications.
+
+00:11:47:18 - 00:12:14:13
+Unknown
+On top of function space in other words, we have a protocol plus as key and not just an isolated application. And so with the core engineer function space rather that, what it's going to allow you to do is rather than resolving around narrow or discretize outcomes, like let's say, and I'm going to get to that or the meaning behind this sort of like curve that you see here with what I'm going to say next.
+
+00:12:14:15 - 00:12:38:03
+Unknown
+So instead of having these like bucket like, let's say model for how predictions mark markets work, we are aiming to unlock something a lot more expressive where anyone, any sort of trader, can submit a full probability distribution over how they expect a certain event to resolve. So let me be a little bit more specific about what I mean with this.
+
+00:12:38:03 - 00:13:02:22
+Unknown
+And this is sort of like what this curve is getting at, right? Let's say for example, imagine this is the price of gold in thousands of dollars, right? So let's say you want to make a bid on what will the price of gold be, let's say by a certain date. Right. Do you see it as being $3,000, $4,000, $5,000?
+
+00:13:03:27 - 00:13:21:13
+Unknown
+Normally you just have to, like, choose some arbitrary boundary and be done with it and say, yes, it's going to be below this or no, it's going to be above this, but with function space. By allowing traders to submit full probability distributions, we can allow them to say like, okay, let's say I think it's going to be $3,000.
+
+00:13:21:13 - 00:13:43:06
+Unknown
+With a certain degree of probability, I think it's gonna be $4,000 with a certainty probability you can convey like the full, let's say, breakdown of how you expect. What are the chances that you see for each of these outcomes to hold. And then for a continuous variable and there's a tiny mathematical caveat here. I guess for the, for the mathematically, inclined audience.
+
+00:13:43:11 - 00:14:01:11
+Unknown
+Other we have a continuous variable. You don't really have these tiny buckets. You have what is known as a probability density function. But it's essentially a curve where the intuitive meaning is that. Right? It's sort of like conveying what are the odds, in a sense, of each of these outcomes that may come to pass, to happen.
+
+00:14:01:13 - 00:14:22:08
+Unknown
+Are you saying, does this have to do with the, resolution of the market, or are you still talking about placing, like, bids? No, this is about the bid. The resolution is it's a separate matter. It's about when you're bidding on something rather than saying a binary yes or no, you're allowed to, let's say,
+
+00:14:22:10 - 00:14:52:27
+Unknown
+Okay. Yeah. I see a 10% probability for this, price point, 20% probability for this price point, so on and so forth. Right. Yeah. So it's a lot of betting in ranges. And you could do this on Poly Market, but you wouldn't get the granularity of like the the curve here where you could bet like you know $1,000 on Bitcoin being above 85,000 and then maybe like 5000 on being above like, 80,000 and then maybe like some other amount, less or higher or whatever.
+
+00:14:52:27 - 00:15:16:06
+Unknown
+Right. Just kind of like to get, the full cat like, capture fully like where your beliefs lie. But here you get to do that with one system and capture your whole kind of, perspective of how what the what the probabilities are going to be over, over the odds. That's exactly right. And I'm just being conscious of finally just drive this home with a final point.
+
+00:15:16:08 - 00:15:44:26
+Unknown
+Yeah. This is the underlying engine for function space, and it's fully sophisticated and allowing people to deal with probability density functions. This is more and this is going to be a special interest for the developer building the application or word or whatever prediction market products they have to bits. But for the user, for the user, who faces the applications, you can abstract away as much of this liquid, of this complexity as you would like, or you can keep it as complex as you would like.
+
+00:15:44:29 - 00:15:48:10
+Unknown
+So, for example.
+
+00:15:48:12 - 00:16:16:20
+Unknown
+With a fully expressive, a PDF or a probability density function paradigm like this one, you can basically state any sort of assertion around how you see, an outcome of the price of gold, two results you can have. Let's say you do an application where people are saying like, oh, it's going to be exactly $3,000. And I want to like put all my liquidity on saying that the price of gold is going to be very close to $3,000, and that's going to be like a very sort of like in the function space.
+
+00:16:16:20 - 00:16:47:29
+Unknown
+That's going to look like a very sharp, sort of like beat that is center around that, number. But you can have, let's say, more risk averse. For example, institutions who they want to hedge a little bit more and say, like, okay, we think it's going to be between 3000 and $4000. And then it will be sort of a curve that looks like, you know, like a more kind of like a hat in function space where it's like, okay, I think it's gonna be between here and here, but I don't really have much certainty about where it's going to be in your honor.
+
+00:16:48:01 - 00:17:31:29
+Unknown
+Right. Exactly. But then what you're doing is you're taking all of these isolated markets, which are all valid user applications, that they're all of interest to the user, but you're casting them all onto the same back end that is has the full fine, the full mathematical expressivity to translate all of those questions to like a common engine, and then you're pulling all the liquidity into a single mechanism, and then what you're doing is you're by taking all of these signals about the world, maybe the regions talking, it might be little institutions talking, it might be different types of traders with different types of profiles of, let's say risk aversion, sophistication, or even
+
+00:17:31:29 - 00:17:50:00
+Unknown
+like early, alpha on how they see the market is going to behave. You're taking all of that, you're aggregating it into a single engine, you're joining the liquidity, and you are creating this consensus curve that you see this market consensus curve that you see here, that is.
+
+00:17:50:03 - 00:18:31:14
+Unknown
+A much more, let's say, granular interpretation of what the market believes, about a certain event and how it's going to happen. Right. And then this information like that and like a hypothetical probability distribution, exactly. The outcome. Exactly, exactly. So, you know, the the end goal, let's say I would argue for prediction markets is to be become a valuable instrument to surface information about the world, right, to surface a certain consensus, to incentivize people who have a deep understanding about an event and how it might resolve, to signal this information out in the open.
+
+00:18:31:16 - 00:19:09:24
+Unknown
+And then instead of, like, keeping it in the current crude fashion of like a binary bunch of buckets, you are able to generate, like a full on probability distribution of how the market expects things to behave. And this is a very, very valuable signal for understanding the world. Yeah. We call this, we call this property by the name of belief, composability, the fact that you can have all of these people from different backgrounds, from different interests in a certain particular event, make wildly different, bits about how a certain event is going to result.
+
+00:19:09:27 - 00:19:43:14
+Unknown
+You're able to cast them all onto the same back end, have things that would normally be assertions that would normally be incompatible with each other, now be compatible and become part of a single source of liquidity. And so you are able to and this is what we mean with belief composability that then you're able to aggregate all of this information into the same place and unlock all of these benefits for traders, builders and people who are using prediction markets as information instruments alike.
+
+00:19:43:16 - 00:20:04:13
+Unknown
+Yeah, that's that's awesome man. Yeah, it's very cool. So you mentioned this is for developers, right? So can I, can I expect to see this on Poly Market or call C or some other kind of like market soon. Anything that works, right. For, for function space, we're actually, building it has its own independent infrastructure layer.
+
+00:20:04:20 - 00:20:20:06
+Unknown
+Okay. So we're going to have a protocol. We're going to have an on chain implementation. And we're going to have its own SDK. Awesome. It is we're going to expect to or our goal is to bring developers to function space directly. Gotcha. In order to build on top of our protocol segment. That's, super exciting.
+
+00:20:21:06 - 00:20:43:05
+Unknown
+Yeah. I think, it's a really interesting concept, and I'd love to, like, personally trade on it because I think, it's it's just really exciting. It's sick. So, thanks for coming on. I would love to have you on, another time. Like, once you have this, like, live and running and we can actually, like, share what it's like, but this is all super early.
+
+00:20:43:12 - 00:21:02:09
+Unknown
+Alpha. Yes. So. Yeah. Excited to have you back. Whenever you're ready to present the demo. Thank you so much. We're working hard over the next few weeks, to live our demo, and we'll definitely be in touch. So stay tuned. Everyone follow us on, on Twitter, as function space. And we really. Well, thank you for the time.
+
+00:21:02:09 - 00:21:17:06
+Unknown
+And we hope to be, on stage soon. Again, thank you so much, Rahul, for the opportunity. It was great to have you. Thanks for being on the show. I'll see you around.
+
+00:21:17:09 - 00:21:30:04
+Unknown
+Okay. Next up, we have outcome markets. Hey, you there. Hello. Nice to meet you. Nice to meet you too. MiG, is it?
+
+00:21:30:07 - 00:22:02:28
+Unknown
+Yeah, yeah, you can call me by MiG. Okay. Well, yeah. Thanks for being in the show. I would love to. Kind of, like, learn more about, outcome markets. Like, what's your kind of, elevator pitch here? So basically, outcome markets is a decentralized prediction hosted on, the hyper EVM. Oh, but the, upper market is to, for high frequency trading, for prediction markets.
+
+00:22:03:00 - 00:22:34:13
+Unknown
+It's, built in mind for traders, and it's built with a user interface of a professional trading terminal, but also very, beginner friendly. And on top of that, we've kind of created a to our core product, which is leverage prediction markets, which we are deploying those contracts on the hyper liquid. It predicts this is sick.
+
+00:22:34:24 - 00:22:55:14
+Unknown
+I actually this is the first time I'm hearing of a high frequency trading prediction market focused trading terminal. So I'm really curious to see how you guys are approaching that. Yeah. You want to share your screen? Yeah. Screen.
+
+00:22:55:16 - 00:23:28:08
+Unknown
+So we're currently in, in testnet, kind of, what people will get to experience when it goes to, to kind of main net, do is we host contracts based off data feeds. So every contract that we can create is based off a verifiable source we do not rely on. Everything is, data related. So if the data says that the contract has resolved, then we resolve it auto, automatically.
+
+00:23:28:10 - 00:23:57:11
+Unknown
+The whole process is autonomous, so there's no human input. And it's all unchecked. So it's all perf verifiable. In terms of the going. So, yeah. Like what's your what's your source for the data? So we use Pip for the trust, DeFi contracts and for sports we use, Sports Monks, which is a dedicated, soccer sports provider.
+
+00:23:57:13 - 00:24:28:14
+Unknown
+Core. But the sports in terms of soccer or football of, say it. We'll be adding like support for NFL, NBA, college football and golf, F1, UFC, pretty much every single sport you can think of will be supported eventually. I think there's a ton of demand for that. So yeah that's awesome. Yeah. So I.
+
+00:24:28:16 - 00:24:56:08
+Unknown
+Yeah, I'll just give a quick, continuation. So like this two kind of different types of contracts right now. One is the sports contracts and the other is the Trump plan D5 contracts. If I go to a, D5 contract, you'll see that it's. It's I'm not sure why it's taking some time. Yeah. So it's it's built similar to a kind of Dex, like, user interface.
+
+00:24:56:11 - 00:25:18:24
+Unknown
+So users can easily, pick and go through the different type of contracts with a dropdown menu where you can, you know, filter for exactly what you want. You can check the asset price, regarding the condition of that contract. So for example, this is the Ethereum contract. Would it trade below. So then you can go down and see the strike price.
+
+00:25:18:24 - 00:25:52:26
+Unknown
+So you're always aware and you can see in real time, of market conditions compared to that strike price. This is where the all the work is currently. What we, we, we come from a market making background. So we created our own market making, our own property market making strategies. What currently in all markets ourselves over like, system where users can also deploy, you know, stable, stable yield on the market.
+
+00:25:54:16 - 00:26:05:22
+Unknown
+The rest is, is, like a trading terminal you can buy, your positions will all appear at the bottom. Have,
+
+00:26:05:24 - 00:26:31:05
+Unknown
+You can see, you know, you can see your open orders. Your trade history and outcome is where the contracts resolve the resolve contracts where you can claim all of your resolved contract. And this is like the trading activity of that contract. And, you know, just like on political culture, you can also, have some interaction with other users.
+
+00:26:31:07 - 00:26:43:25
+Unknown
+Cool. Where the sort of, I just I'm just curious about the high frequency trading aspect. How do you incorporate that into the platform?
+
+00:26:43:27 - 00:27:14:00
+Unknown
+So we build our own entire. But we are not just the front end. This is not, we're not show any poly or Kaushik. So we, built the, central limit order book and the matching engine logic. The HFT system mainly comes through, docs, where we're currently developing, API documentation so users can kind of deploy their own, strategies via, API trading and,
+
+00:27:14:03 - 00:27:40:25
+Unknown
+Yeah. We will also add all arrangements in there as well. So the high frequency trading you mostly will be people doing API based trading. And we support it based off our, matching engine. Okay, cool. So, yeah, you're opening up this to, people running prediction market bots, people who want, to trade algorithmically, etc..
+
+00:27:40:27 - 00:28:04:11
+Unknown
+Correct? Correct. Our primary goal is to ensure that there's high liquidity. So the goal is to ensure more liquidity. Then our prediction market. So people will come to outcome to trade size, but also algorithmic algorithmically at the same time. How are you, trying to get liquidity? I mean, currently we're using our own treasury.
+
+00:28:04:25 - 00:28:25:27
+Unknown
+But we have our own, market making rebate program where people can, earn a rebates, depending, how much volume that they period. And based on that. So we're trying to achieve because when speaks with some big teams.
+
+00:28:26:00 - 00:28:42:26
+Unknown
+You and we also, are currently using our own treasury. Sic yeah. That that's really great that you guys are in chat, chatting with, market makers and such. Do you want to cover the leverage, tab as well?
+
+00:28:42:28 - 00:29:11:09
+Unknown
+Yeah. So it's completely in the demo mode right now because we have free decks. For for the clients that's listening out there for people to join. You know, give their inputs on, on the, on the decks side is we want the community involved in picking out all who we stake with, with the, with, the contracts that they would like us to do.
+
+00:29:11:10 - 00:29:38:10
+Unknown
+We want it to be completely interactive with the community. So, at the moment, we this this is this completely demo, but the is what you decide in some of the system on the lever side, we've just, a clear indication indicator and you can pick up the ten times, ten x leverage. Sweet, sweet. I'm curious, what's your team's background?
+
+00:29:38:14 - 00:29:43:14
+Unknown
+What are you guys doing before running? Outcome. Markets.
+
+00:29:43:16 - 00:29:54:12
+Unknown
+Great question. So we we actually come from a mixed pattern to them. All the co-founders come from like a fintech background. And we also have,
+
+00:29:54:21 - 00:30:22:19
+Unknown
+A hedge fund, internal for our internal market making. We have a, desk run by a hedge fund manager. So we come from like a mixed background of fintech and also, crypto and DeFi market making, sorry, I mean, DeFi and try to market making we what, the market makers don't have the liquid around.
+
+00:30:22:24 - 00:30:56:20
+Unknown
+And, late 2023, early 2024. Nice, nice. We kind of transition from, sorry. No, I was just, So what'd you say? I was just saying, like, that was a nice time to be on hybrid liquid. For sure, because, you know, very good where it could go. So, say it. And, yeah, I mean, we transition to making to kind of going, what is.
+
+00:30:56:22 - 00:31:19:16
+Unknown
+Gotcha. Yeah, that's really cool. Okay, so you guys are building on hyper even, you guys are building a, high frequency trading sort of, API. And then this platform, I'm curious, like, what are the next couple of weeks, looking like for you guys? What do you want to focus on? What can we kind of expect?
+
+00:31:20:02 - 00:31:22:29
+Unknown
+Out of the team?
+
+00:31:23:02 - 00:31:33:02
+Unknown
+Yeah. Great. Great question. So we are currently focused on moving from Testament to Mana. So,
+
+00:31:33:04 - 00:32:00:12
+Unknown
+Potent source at this of the stage, any, can, you know, report, a bug if they find it, there will be, a bug bounty program, which is $25 per bug at the moment. And, as soon as we kind of polish, we'll be moving to Maine very, very quickly in the next two weeks watching an audit report as well.
+
+00:32:01:03 - 00:32:22:01
+Unknown
+Also, smart contract bugs, this is the second. Will it? And we will be going to Maine that with the core product. And then they get free decks with the leveraged products will be shortly after that. Sweet. That's super exciting. I'm definitely gonna give you guys, I'm going to check you guys out, once the product goes live.
+
+00:32:22:04 - 00:32:27:01
+Unknown
+And, Yeah, best of luck with everything.
+
+00:32:27:03 - 00:33:14:06
+Unknown
+Thank you. Thank you for having me on here. Where can people find you? One more? Yeah, people can find us. So, mess with, outcome market ex. And find my personal handle with alchemic. And, you know, our discord is is, but all to our page so they can join our discord. In terms of what I was going to touch upon is what really also excited about the hit free Dex, primarily because it provides a new kind of, I don't know if you've been following the hit freezes, but pretty much all the deploys have been, deploying only towards, like, very, very, interesting how
+
+00:33:14:06 - 00:33:22:03
+Unknown
+the, community and, do you want to give it, you know, in general market?
+
+00:33:22:06 - 00:33:52:06
+Unknown
+Sorry. Do you want to give a quick overview of what that is that they have for you, Dex? For you? Yeah. Yeah. I mean, I'll hit free Dex, is market bucks. So in terms of exact documentation to be released in that on, I'll explain very soon, but I'll give a quick overview, what we've learned. But, the probabilities from the top, prediction markets.
+
+00:33:52:08 - 00:34:43:18
+Unknown
+So for example calcium poly market and we take the implied equity and we work out the median probability. And we use that as our oracle source. And we deploy at that specific on hyper liquid sample. The event that's coming up is the Super Bowl. What the implied probability of an AFK team for example, a, B contract based on that bank, which will represent P for the probability of short, which will represent so the no side of the contract and it will use the entire hyper liquid, liquidation system, that entire backend, which is very, very robust.
+
+00:34:44:01 - 00:35:17:06
+Unknown
+Those type of contracts. And we are focusing on those, as macro, for example, the fed rate decisions I, presidential elections, the World Cup, which is coming up within like five months. We'll focus in those contract talks on really the really big, events.
+
+00:35:17:08 - 00:35:41:21
+Unknown
+Very cool. Yeah. I think it's really cool how you guys are, incorporating the information from, like, culture in Poly Market to inform, like, how you guys are creating these contracts. So, yeah, excited to see, what comes out from Malcolm Markets. And, happy to have you back on, once you guys have, once you're on main net, once you want to, like, chat more about history, dexs and so on.
+
+00:35:41:21 - 00:35:45:28
+Unknown
+So, yeah, thanks for being on the show.
+
+00:35:46:00 - 00:36:05:08
+Unknown
+Thank you for having me. Thank you, thank you. All right, so you're on. See you. Last but not least, we have Ken from on screeners.
+
+00:36:05:11 - 00:36:30:14
+Unknown
+Hey, Ken, are you there? Yes. Oh, hello. So nice to meet you. Nice to chat with you, too, Ken. How are you doing? Yeah. I'm good. And how are you? I'm doing fantastic, man. Yeah. So, tell me a little bit about, on screeners. Oh. So. Okay. Well, hey, Hello, everyone. My name is Ken.
+
+00:36:30:17 - 00:36:57:27
+Unknown
+I am the founder, and I'm building the Oscar winner. So can I see my screen? Yeah. Go ahead. Okay. Just wait a minute.
+
+00:36:57:29 - 00:37:30:24
+Unknown
+Can you see my screen now? Yeah. So the screen is a platform for prediction, market shadow and right now I'm just a part for the opinion. And so we support, Poly Market. Caci robo maybe the prediction. So so we have the discover feature where you can find the changing market in the real time.
+
+00:37:32:19 - 00:38:03:23
+Unknown
+In the top layer, you can check the new market just created. And, hot tap heart, you can check the top 20, card market rank by, 24. Our vote, our volume and cabinet. You can check, on the market, have the bullet point. So we have the smart money where you will check the, well footprint.
+
+00:38:03:26 - 00:38:34:24
+Unknown
+And right now, we, I'm, 100 focus about we try feature so where you can find the opportunity between, prediction markets right now is, WeChat feature. I have a support about, opinion and, Poly Market right now. So I have here is a bit more so, you know, you can, buy.
+
+00:38:34:24 - 00:39:02:15
+Unknown
+Yes on poly and buy now on obtaining. And it's, total is less than 100. You have to spare. Cool. So, yeah, no matter how things work out, you're going to make that percentage on the the market in a bit more. Yes. So the which is can we find the best bit price on the audiobook.
+
+00:39:02:18 - 00:39:36:04
+Unknown
+So strategy here saying, you have to buy just on Poly Market and buy no on opinion in the outcome. 200 and, so here. Cool. Where are you getting this, information from and how quickly is it updated? I get that, direct from API, from, opinion and, Poly Market. Yeah. So with the with mode, you have to set the limit on a, so you have two way.
+
+00:39:36:11 - 00:40:05:13
+Unknown
+So limit out for three. It. But when you don't want to weigh you, we have to ask for the ask mode. Finding the market order so you can buy immediately. So don't have to worry about limit order and grab the calculator here. Example size. You want to buy 100 share. You can put here 100 share.
+
+00:40:07:03 - 00:40:15:26
+Unknown
+So is a calculator. We will, estimate the fee and the PNL. And right here.
+
+00:40:15:28 - 00:40:20:03
+Unknown
+Cool. So just click here.
+
+00:40:20:05 - 00:40:54:24
+Unknown
+And we will have to see what, I think about, the opinion hap, fee. Yeah. Opinion free is, mean is, not fi, but per transaction and market and mark area 2% in the free. So you have to, setting bean Abhishek is one one for 1%. And I think, I will find the 100 mean share.
+
+00:40:54:27 - 00:40:59:12
+Unknown
+So you can scan now in the real time.
+
+00:40:59:14 - 00:41:26:20
+Unknown
+Right now, the API of the open is kind of slow and limited. So, we have to worry about, up to 1 million units to find the opportunity when the scandal fi, opportunity mass on the, on, on the outcome, we will show up here and just way about it. Maybe a few seconds.
+
+00:41:26:22 - 00:41:51:17
+Unknown
+Okay. But, after that, it will show all the markets that, have the, criteria of minimum arbitrage 1% and, yeah. Yeah. Is it, is still scanning. So. Yeah. Just worry about for few second to scan if we're before you started on screen. So, what were you doing? What's your background?
+
+00:41:52:00 - 00:42:25:09
+Unknown
+My team, the only two people, me and my friend, we have about a 5 to 6 year in the crypto market, and, I had the about for a year in the market, like a community manager. Oh, is for is for about, maybe, 60 to about 100 opportunity right now. It's about, 3% year right now.
+
+00:42:25:11 - 00:43:25:12
+Unknown
+So if you one by about 100 share is, estimate, your free here and pnl and you can click here to go to market. About guessing about this outcome, 600 million. Yeah. Okay. Yeah. I yeah, yeah. Cool. Yeah. What inspired you to start asking? I think this, next screen, the this I am the region and, it's to use, let's see, you know, when I move, when I move, coming to, producing market, I don't see any, platform or light, next to check the real time, chat or chain or recent, essentially.
+
+00:43:25:15 - 00:43:37:01
+Unknown
+So I want to be able to off screen those who have Chato to file the chat. Chen and Abhishek opportunity to,
+
+00:43:37:04 - 00:43:46:26
+Unknown
+Okay, so what would you say is, like, the, Dex screener has a very iconic homepage, right? So. So what would that be for our screener?
+
+00:43:46:28 - 00:44:15:15
+Unknown
+But yes, lexicon, is iconic. So, oskin. Is slide is the. So I also it is primarily like Skinner that I can say okay, cool. Yeah. Anything else you want to show off? What Skinner is, in the early beta and more feature is coming in the near future, and maybe we will run the chat, feature in the next week.
+
+00:44:15:18 - 00:44:32:27
+Unknown
+And so, someone won not shy feature first. They can DM me to getting, access soon. Cool. Where can they find you? You can find me on the Twitter.
+
+00:44:33:05 - 00:44:42:29
+Unknown
+What's your, sister is, in the username or screener?
+
+00:44:43:09 - 00:45:11:12
+Unknown
+Is it just, add odd screeners like, on your and. Yes. Yes, yes. Okay. Cool. Very cool. So what can we expect from OD screeners, in the next month or so? Right now, for 100% focus about aptitude and that maybe, we will, I, I, we will build more feature ladder smart money.
+
+00:45:11:12 - 00:45:38:07
+Unknown
+So you can check the insider, the top pnl of the Polish market. And right now and right now only support the opinion. And we will move for the Polish market to check the check and check. And Casey and the proposal. Okay, sig? Yeah. I can totally see that fleshing out, the number of markets on your platform.
+
+00:45:38:07 - 00:46:03:16
+Unknown
+Definitely like a more Dex screener style. It's like tons of different opportunities and. Yeah, definitely like, we'll make there be it'll it'll increase the amount of arbitrage opportunities and so on. So very excited to see that. Good luck. And, yeah. Thanks for being on the show. Okay. Thank you for having me, bro. Yeah. Thank you.
+
+00:46:03:18 - 00:46:46:22
+Unknown
+Okay. Yeah. A great set of teams today. Function space, working on, just a new primitive for prediction markets as a whole, enabling the ability to bid on a probability distribution of beliefs, which is just a fascinating concept. It's just certainly adding more granularity to what you're able to trade on. Next up, we had, like, just some, there's some great teams, like, I think what I, what I liked most for sure was how we just have, like, a diversity of teams, every single time.
+
+00:46:46:22 - 00:47:07:02
+Unknown
+And it's just, Yeah. This is, this is just really great. So if you guys had any alpha, if you guys really love the the teams that are on our show, like, make sure to like, retweet the show, you know, quote, tweet about it. And, next week we're going to have three on three more teams for you guys.
+
+00:47:07:24 - 00:47:15:24
+Unknown
+That's super early stage. And, yeah, thanks for watching the show. And, I'll see you next week. All right.
+

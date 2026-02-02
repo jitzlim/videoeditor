@@ -1,0 +1,6 @@
+
+# Ignore secrets
+.env
+config_api_key.txt
+__pycache__/
+

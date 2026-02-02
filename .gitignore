@@ -1,0 +1,19 @@
+# General
+.DS_Store
+.tmp/
+.env
+**/__pycache__/
+*.pyc
+credentials.json
+token.json
+
+# Node/Vite
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# App Specific
+video-script-app/backend/.env
+video-script-app/backend/config_api_key.txt
+video-script-app/backend/config_openrouter_key.txt
