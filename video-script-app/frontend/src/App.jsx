@@ -1,5 +1,5 @@
-// BUILD_ID: 2026-02-02_15:45_AMBER_FINAL
-import { useState, useRef } from 'react'
+// BUILD_ID: 2026-02-02_16:05_AMBER_HISTORY
+import { useState, useRef, useEffect } from 'react'
 import './App.css'
 import ReactMarkdown from 'react-markdown'
 
@@ -7,7 +7,25 @@ function App() {
   const [file, setFile] = useState(null)
   const [loading, setLoading] = useState(false)
   const [analysis, setAnalysis] = useState('')
+  const [history, setHistory] = useState([])
   const fileInputRef = useRef(null)
+
+  // Load history from localStorage on mount
+  useEffect(() => {
+    const savedHistory = localStorage.getItem('clipooor_history')
+    if (savedHistory) {
+      try {
+        setHistory(JSON.parse(savedHistory))
+      } catch (e) {
+        console.error("Failed to parse history", e)
+      }
+    }
+  }, [])
+
+  // Save history whenever it changes
+  useEffect(() => {
+    localStorage.setItem('clipooor_history', JSON.stringify(history))
+  }, [history])
 
   const onFileChange = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -36,18 +54,30 @@ function App() {
       const data = await response.json()
       if (response.ok) {
         setAnalysis(data.analysis)
+
+        // Save to History
+        const newEntry = {
+          id: Date.now(),
+          timestamp: new Date().toLocaleString(),
+          filename: file.name,
+          content: data.analysis
+        }
+        setHistory(prev => [newEntry, ...prev].slice(0, 20)) // Keep last 20
       } else {
         setAnalysis(`Server Error: ${data.detail || 'Unknown server error'}`)
       }
     } catch (error) {
       console.error('Upload error:', error);
-      let errorMessage = `Connection Error: ${error.message}`;
-      if (error.message.includes('Failed to fetch')) {
-        errorMessage += " (Check Vercel Environment Variable VITE_API_URL)";
-      }
-      setAnalysis(errorMessage)
+      setAnalysis(`Connection Error: ${error.message}`)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const clearHistory = () => {
+    if (window.confirm("Delete all saved reports?")) {
+      setHistory([])
+      setAnalysis('')
     }
   }
 
@@ -58,9 +88,9 @@ function App() {
           <h1>CLIPOOOR</h1>
         </div>
         <div className="status-bits">
-          TRANSCRIPT_PROCESSOR_V4.0<br />
+          TRANSCRIPT_PROCESSOR_V4.1<br />
           MODEL: GEMINI-2.0-FLASH<br />
-          CLIP_TARGET: 60s // STATUS: READY
+          CLIP_TARGET: 60s // HISTORY: ACTIVE
         </div>
       </header>
 
@@ -79,34 +109,39 @@ function App() {
               {file ? (
                 <div className="filename">{file.name}</div>
               ) : (
-                <p>READY_FOR_SIGNAL...<br />CLICK TO UPLOAD TRANSCRIPT</p>
+                <p>READY_FOR_SIGNAL...<br />UPLOAD TRANSCRIPT</p>
               )}
             </div>
           </div>
 
           <div className="glass-panel">
-            <div className="panel-label">EXECUTION_MODULE</div>
-            <button
-              className="action-btn"
-              onClick={handleUpload}
-              disabled={loading || !file}
-            >
-              {loading ? 'ANALYZING...' : 'EXTRACT VIRAL CLIPS'}
+            <div className="panel-label">EXECUTION</div>
+            <button className="action-btn" onClick={handleUpload} disabled={loading || !file}>
+              {loading ? 'DETERMINING...' : 'EXTRACT VIRAL CLIPS'}
             </button>
-            <p style={{ marginTop: '15px', fontFamily: 'Space Mono', fontSize: '0.6rem', color: '#444', textAlign: 'center' }}>
-              REDUNDANCY CHECK: ACTIVE // BUFFER: CLEAR
-            </p>
           </div>
 
-          <div className="glass-panel">
-            <div className="panel-label">SYSTEM_CORE</div>
-            <ul className="metadata-list" style={{ listStyle: 'none', fontFamily: 'Space Mono', fontSize: '0.7rem', color: '#555', padding: 0 }}>
-              <li style={{ marginBottom: '10px' }}>&gt; SCANNING FOR "GOLDEN NUGGETS"</li>
-              <li style={{ marginBottom: '10px' }}>&gt; DETECTING CURIOSITY GAPS</li>
-              <li style={{ marginBottom: '10px' }}>&gt; SCORING VIRAL POTENTIAL</li>
-              <li style={{ marginBottom: '10px' }}>&gt; CALIBRATING STORYTELLER AI</li>
-              <li style={{ marginBottom: '10px' }}>&gt; VERIFYING TIMESTAMPS...</li>
-            </ul>
+          <div className="glass-panel history-panel">
+            <div className="panel-label">
+              <span>MISSION_LOG</span>
+              <button className="clear-btn" onClick={clearHistory}>CLEAR</button>
+            </div>
+            <div className="history-list">
+              {history.length === 0 ? (
+                <div className="history-empty">NO RECENT MISSIONS</div>
+              ) : (
+                history.map(item => (
+                  <div
+                    key={item.id}
+                    className={`history-item ${analysis === item.content ? 'active' : ''}`}
+                    onClick={() => setAnalysis(item.content)}
+                  >
+                    <div className="history-filename">{item.filename}</div>
+                    <div className="history-date">{item.timestamp}</div>
+                  </div>
+                ))
+              )}
+            </div>
           </div>
         </aside>
 
