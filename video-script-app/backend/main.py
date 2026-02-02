@@ -34,9 +34,9 @@ For each interesting section you find, output the following in Markdown:
 -   **Duration**: ~[Approx Duration]
 -   **Viral Score**: [1-10]/10 (Reasoning)
 -   **Narration Intro (Script for You)**:
-    *   *Context*: [A 5-10s hook context]
-    *   *Script*: "[Your script here - 3rd person, curiosity gap]"
--   **Hook Line**: "[Quote the best opening line of the clip]"
+    *   *Context*: [The high-stakes problem or setup this clip addresses]
+    *   *Script*: "[3rd person high-impact narration. Start with a shocking claim, a profound question, or a 'secret' being revealed. Narrate ABOUT the speaker and the clip like a top-tier documentary narrator or TikTok storyteller. Use curiosity gaps like 'He literally just...', 'The industry is missing this one thing...', 'Wait until you hear how he...'. Make it unskippable.]"
+-   **Hook Line**: "[The absolute most punchy, 'Golden Nugget' quote from the clip that stops the scroll immediately.]"
 -   **Key Moments (Timestamps)**:
     -   `MM:SS`: "[FULL spoken text, NO ellipses/truncation. Include the complete sentence(s)]" (Start)
     -   `MM:SS`: "[FULL spoken text, NO ellipses/truncation. Include the complete context of the aha moment]" (Peak)
