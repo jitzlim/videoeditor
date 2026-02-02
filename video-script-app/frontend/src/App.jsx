@@ -36,10 +36,15 @@ function App() {
       if (response.ok) {
         setAnalysis(data.analysis)
       } else {
-        setAnalysis(`Error: ${data.detail}`)
+        setAnalysis(`Server Error: ${data.detail || 'Unknown server error'}`)
       }
     } catch (error) {
-      setAnalysis(`Error: ${error.message}`)
+      console.error('Upload error:', error);
+      let errorMessage = `Connection Error: ${error.message}`;
+      if (error.message.includes('Failed to fetch')) {
+        errorMessage += " (This often happens if the VITE_API_URL is wrong, or the backend timed out after 10s on Vercel Hobby tier)";
+      }
+      setAnalysis(errorMessage)
     } finally {
       setLoading(false)
     }
