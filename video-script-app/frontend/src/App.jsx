@@ -68,7 +68,7 @@ function App() {
       <main className="main-content">
         <aside className="control-sidebar">
           <div className="glass-panel">
-            <div className="panel-label">Source Input</div>
+            <div className="panel-label">SOURCE INPUT (ACTIVE)</div>
             <div className="file-drop-zone" onClick={triggerFileInput}>
               <input
                 type="file"
