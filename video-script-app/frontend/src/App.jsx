@@ -60,8 +60,7 @@ function App() {
     formData.append('model', selectedModel)
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
-      const response = await fetch(`${apiUrl}/analyze`, { method: 'POST', body: formData })
+      const response = await fetch('/api/analyze', { method: 'POST', body: formData })
       const data = await response.json()
       if (response.ok && data.clips) {
         setClips(data.clips)
