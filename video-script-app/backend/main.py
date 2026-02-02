@@ -1,7 +1,7 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import os
-from openai import OpenAI
+import google.generativeai as genai
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -17,18 +17,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Configure OpenRouter/OpenAI API
-api_key = os.getenv("OPENROUTER_API_KEY")
-site_url = os.getenv("SITE_URL", "http://localhost:5173")
-site_name = os.getenv("SITE_NAME", "CLIPOOOR")
-
+# Configure Gemini API
+api_key = os.getenv("GEMINI_API_KEY")
 if api_key:
-    client = OpenAI(
-        base_url="https://openrouter.ai/api/v1",
-        api_key=api_key,
-    )
-else:
-    client = None
+    genai.configure(api_key=api_key)
 
 SYSTEM_PROMPT = """
 You are an expert Video Script Writer and Editor. 
@@ -64,36 +56,23 @@ For each interesting section you find, output the following in Markdown:
 
 @app.post("/analyze")
 async def analyze_transcript(file: UploadFile = File(...)):
-    if not client:
-        raise HTTPException(status_code=500, detail="OPENROUTER_API_KEY not configured in .env")
+    if not api_key:
+        raise HTTPException(status_code=500, detail="GEMINI_API_KEY not configured in .env")
     
     try:
         content = await file.read()
         transcript_text = content.decode("utf-8")
         
-        # Call OpenRouter (Google Gemma 3 free model)
-        completion = client.chat.completions.create(
-            extra_headers={
-                "HTTP-Referer": site_url,
-                "X-Title": site_name,
-            },
-            model="google/gemma-3n-e4b-it:free",
-            messages=[
-                {
-                    "role": "user",
-                    "content": f"{SYSTEM_PROMPT}\n\nTRANSCRIPT:\n{transcript_text}"
-                }
-            ]
-        )
+        # Call Gemini (using flash for speed and to avoid Vercel timeouts if possible)
+        model = genai.GenerativeModel('gemini-1.5-flash')
+        response = model.generate_content(f"{SYSTEM_PROMPT}\n\nTRANSCRIPT:\n{transcript_text}")
         
-        response_text = completion.choices[0].message.content
-        return {"analysis": response_text}
+        return {"analysis": response.text}
         
     except Exception as e:
-        # Print error to logs for debugging
         print(f"Error generating content: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/")
 def read_root():
-    return {"status": "Video Script App Backend Running (OpenRouter)"}
+    return {"status": "CLIPOOOR Backend Running (Gemini)"}
