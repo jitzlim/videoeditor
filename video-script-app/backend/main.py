@@ -5,14 +5,10 @@ import json
 import logging
 import re
 from openai import OpenAI
-from google import genai
-from dotenv import load_dotenv
 
 # Strategic Logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
-load_dotenv()
 
 app = FastAPI()
 
@@ -117,45 +113,32 @@ async def analyze_transcript(
 
         logger.info(f"INITIATING_RECON: Model={model}")
 
-        # ROUTING LOGIC: If Gemini 3 is selected, use Google SDK directly
+        # UNIFIED INTELLIGENCE ROUTING (OpenRouter)
+        if not OPENROUTER_API_KEY:
+            raise HTTPException(status_code=500, detail="OpenRouter API Key missing")
+            
+        # Map Gemini Direct to OpenRouter ID if needed
+        target_model = model
         if "gemini-3" in model:
-            if not GEMINI_API_KEY:
-                raise HTTPException(status_code=500, detail="Gemini API Key missing in .env")
-            
-            # Use 2026-standard google.genai Client
-            google_client = genai.Client(api_key=GEMINI_API_KEY)
-            
-            response = google_client.models.generate_content(
-                model="gemini-3-flash-preview",
-                contents=f"SYSTEM_PROMPT:\n{SYSTEM_PROMPT}\n\nTRANSCRIPT:\n{transcript_text}",
-                config={
-                    "temperature": 0.1,
-                    # In 2026, JSON response is handled via config
-                    "response_mime_type": "application/json"
-                }
-            )
-            json_str = response.text
-        else:
-            # Use OpenRouter SDK
-            if not OPENROUTER_API_KEY:
-                raise HTTPException(status_code=500, detail="OpenRouter API Key missing")
-                
-            response = client.chat.completions.create(
-                extra_headers={"HTTP-Referer": "https://clipooor.vercel.app", "X-Title": "CLIPOOOR"},
-                model=model,
-                messages=[
-                    {"role": "system", "content": SYSTEM_PROMPT},
-                    {"role": "user", "content": f"TRANSCRIPT:\n{transcript_text}"}
-                ],
-                extra_body={"reasoning": {"enabled": True}} if "gpt-oss" in model or "r1" in model else {},
-                temperature=0.1
-            )
-            raw_output = response.choices[0].message.content or ""
-            clean_output = re.sub(r'<think>.*?</think>', '', raw_output, flags=re.DOTALL).strip()
-            json_match = re.search(r'```json\s*(\{.*?\})\s*```', clean_output, re.DOTALL)
-            if not json_match:
-                json_match = re.search(r'(\{.*\})', clean_output, re.DOTALL)
-            json_str = json_match.group(1) if json_match else clean_output
+            target_model = "google/gemini-2.0-flash-exp:free"
+
+        response = client.chat.completions.create(
+            extra_headers={"HTTP-Referer": "https://clipr.vercel.app", "X-Title": "CLIPR"},
+            model=target_model,
+            messages=[
+                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "user", "content": f"TRANSCRIPT:\n{transcript_text}"}
+            ],
+            response_format={"type": "json_object"} if "gemini" in target_model or "gpt-4o" in target_model else None,
+            extra_body={"reasoning": {"enabled": True}} if "gpt-oss" in target_model or "r1" in target_model else {},
+            temperature=0.1
+        )
+        raw_output = response.choices[0].message.content or ""
+        clean_output = re.sub(r'<think>.*?</think>', '', raw_output, flags=re.DOTALL).strip()
+        json_match = re.search(r'```json\s*(\{.*?\})\s*```', clean_output, re.DOTALL)
+        if not json_match:
+            json_match = re.search(r'(\{.*\})', clean_output, re.DOTALL)
+        json_str = json_match.group(1) if json_match else clean_output
 
         try:
             data = json.loads(json_str)
