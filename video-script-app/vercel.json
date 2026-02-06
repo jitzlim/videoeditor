@@ -1,29 +1,8 @@
 {
-    "version": 2,
-    "builds": [
+    "rewrites": [
         {
-            "src": "frontend/package.json",
-            "use": "@vercel/static-build",
-            "config": {
-                "distDir": "frontend/dist"
-            }
-        },
-        {
-            "src": "backend/main.py",
-            "use": "@vercel/python"
+            "source": "/api/(.*)",
+            "destination": "/api/$1"
         }
-    ],
-    "routes": [
-        {
-            "src": "/analyze",
-            "dest": "backend/main.py"
-        },
-        {
-            "src": "/(.*)",
-            "dest": "frontend/dist/$1"
-        }
-    ],
-    "env": {
-        "OPENROUTER_API_KEY": "@openrouter_api_key"
-    }
+    ]
 }

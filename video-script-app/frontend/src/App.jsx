@@ -65,7 +65,7 @@ function App() {
       const apiUrl = import.meta.env.VITE_API_URL ||
         (window.location.hostname === 'localhost' ? 'http://localhost:8000' : '');
       console.log(`[TACTICAL_RECON] Initiating fetch for model: ${selectedModel} at ${apiUrl || 'same-origin'}`)
-      const response = await fetch(`${apiUrl}/analyze`, { method: 'POST', body: formData })
+      const response = await fetch(`${apiUrl}/api/analyze`, { method: 'POST', body: formData })
       console.log(`[TACTICAL_RECON] Status: ${response.status} ${response.statusText}`)
       const data = await response.json()
       if (response.ok && data.clips) {

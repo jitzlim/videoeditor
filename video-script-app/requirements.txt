@@ -1,0 +1,4 @@
+fastapi
+openai
+python-multipart
+python-dotenv
