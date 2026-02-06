@@ -4,11 +4,17 @@ import os
 import json
 import logging
 import re
+import time
 from openai import OpenAI
+
+from google import genai
+from dotenv import load_dotenv
 
 # Strategic Logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+load_dotenv()
 
 app = FastAPI()
 
@@ -21,12 +27,12 @@ app.add_middleware(
 )
 
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
 # Primary Clients
 client = OpenAI(
     base_url="https://openrouter.ai/api/v1",
     api_key=OPENROUTER_API_KEY,
+    timeout=120.0, # Kill hung connections after 2 minutes
 )
 
 # REFINED SYSTEM PROMPT (Claude-Style Precision)
@@ -98,12 +104,13 @@ def heuristic_json_fix(json_str):
     return json_str
 
 @app.post("/analyze")
-async def analyze_transcript(
+def analyze_transcript(
     file: UploadFile = File(...),
     model: str = Form("openai/gpt-oss-20b:free")
 ):
+    start_time = time.time()
     try:
-        content = await file.read()
+        content = file.file.read() # Read synchronously
         transcript_text = content.decode("utf-8")
         
         # Limit transcript length
@@ -111,7 +118,7 @@ async def analyze_transcript(
         if len(transcript_text) > max_chars:
             transcript_text = transcript_text[:max_chars] + "...[TRUNCATED]"
 
-        logger.info(f"INITIATING_RECON: Model={model}")
+        logger.info(f"INITIATING_RECON: Model={model} | Length={len(transcript_text)}")
 
         # UNIFIED INTELLIGENCE ROUTING (OpenRouter)
         if not OPENROUTER_API_KEY:
@@ -119,9 +126,11 @@ async def analyze_transcript(
             
         # Map Gemini Direct to OpenRouter ID if needed
         target_model = model
-        if "gemini-3" in model:
-            target_model = "google/gemini-2.0-flash-exp:free"
+        if "gemini-2.0-flash" in model or "gemini-3" in model:
+            target_model = "google/gemini-2.0-flash-exp" # Valid OpenRouter model ID
 
+        logger.info(f"SIGNAL_DISPATCH: TargetModel={target_model}")
+        api_start = time.time()
         response = client.chat.completions.create(
             extra_headers={"HTTP-Referer": "https://clipr.vercel.app", "X-Title": "CLIPR"},
             model=target_model,
@@ -133,6 +142,9 @@ async def analyze_transcript(
             extra_body={"reasoning": {"enabled": True}} if "gpt-oss" in target_model or "r1" in target_model else {},
             temperature=0.1
         )
+        api_end = time.time()
+        logger.info(f"SIGNAL_RECEIVED: API_Latency={api_end - api_start:.2f}s")
+
         raw_output = response.choices[0].message.content or ""
         clean_output = re.sub(r'<think>.*?</think>', '', raw_output, flags=re.DOTALL).strip()
         json_match = re.search(r'```json\s*(\{.*?\})\s*```', clean_output, re.DOTALL)
@@ -153,6 +165,7 @@ async def analyze_transcript(
             data["clips"] = [c for c in data["clips"] if isinstance(c, dict)]
             data["clips"].sort(key=lambda x: x.get("viral_score", 0), reverse=True)
             
+        logger.info(f"RECON_COMPLETE: Total_Duration={time.time() - start_time:.2f}s")
         return data
     except Exception as e:
         logger.exception("SYSTEM_CRASH")
@@ -160,4 +173,4 @@ async def analyze_transcript(
 
 @app.get("/")
 def read_root():
-    return {"status": "G3-Enhanced Engine Active"}
+    return {"status": "G3-Enhanced Engine Active // HEARTBEAT_STABLE"}

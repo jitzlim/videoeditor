@@ -4,9 +4,9 @@ import ReactMarkdown from 'react-markdown'
 import nexusAvatar from './assets/nexus_avatar.png'
 
 const MODELS = [
-  { id: 'openai/gpt-oss-20b:free', name: 'GPT-OSS 20B // STRATEGIC_REASONING' },
-  { id: 'deepseek/deepseek-r1-0528:free', name: 'DEEPSEEK R1 // NARRATIVE_UNIT' },
-  { id: 'google/gemini-3-flash', name: 'GEMINI 3 FLASH // KINETIC_SPEED' },
+  { id: 'google/gemini-2.0-flash-exp', name: 'GEMINI 2.0 FLASH // KINETIC_SPEED' },
+  { id: 'openai/gpt-4o-mini', name: 'GPT-4O MINI // STRATEGIC_REASONING' },
+  { id: 'deepseek/deepseek-r1-0528:free', name: 'DEEPSEEK R1 // NARRATIVE_UNIT (SLOW)' },
 ]
 
 const INTEL_DATA = [
@@ -60,8 +60,13 @@ function App() {
     formData.append('model', selectedModel)
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+      // Use environment variable or detect environment
+      // In production, backend should be on same domain (Vercel serverless functions)
+      const apiUrl = import.meta.env.VITE_API_URL ||
+        (window.location.hostname === 'localhost' ? 'http://localhost:8000' : '');
+      console.log(`[TACTICAL_RECON] Initiating fetch for model: ${selectedModel} at ${apiUrl || 'same-origin'}`)
       const response = await fetch(`${apiUrl}/analyze`, { method: 'POST', body: formData })
+      console.log(`[TACTICAL_RECON] Status: ${response.status} ${response.statusText}`)
       const data = await response.json()
       if (response.ok && data.clips) {
         setClips(data.clips)
