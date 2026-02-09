@@ -111,7 +111,7 @@ async def analyze_transcript(
 ):
     start_time = time.time()
     try:
-        content = file.file.read() # Read synchronously
+        content = await file.read()
         transcript_text = content.decode("utf-8")
         
         # Limit transcript length
@@ -123,7 +123,8 @@ async def analyze_transcript(
 
         # UNIFIED INTELLIGENCE ROUTING (OpenRouter)
         if not OPENROUTER_API_KEY:
-            raise HTTPException(status_code=500, detail="OpenRouter API Key missing")
+             logger.error("MISSION_CRITICAL_FAILURE: OPENROUTER_API_KEY is null")
+             raise HTTPException(status_code=500, detail="OpenRouter API Key missing. Please set it in Vercel settings.")
             
         # Map Gemini Direct to OpenRouter ID if needed
         target_model = model
@@ -132,17 +133,23 @@ async def analyze_transcript(
 
         logger.info(f"SIGNAL_DISPATCH: TargetModel={target_model}")
         api_start = time.time()
-        response = client.chat.completions.create(
-            extra_headers={"HTTP-Referer": "https://clipr.vercel.app", "X-Title": "CLIPR"},
-            model=target_model,
-            messages=[
-                {"role": "system", "content": SYSTEM_PROMPT},
-                {"role": "user", "content": f"TRANSCRIPT:\n{transcript_text}"}
-            ],
-            response_format={"type": "json_object"} if "gemini" in target_model or "gpt-4o" in target_model else None,
-            extra_body={"reasoning": {"enabled": True}} if "gpt-oss" in target_model or "r1" in target_model else {},
-            temperature=0.1
-        )
+        
+        try:
+            response = client.chat.completions.create(
+                extra_headers={"HTTP-Referer": "https://clipr.vercel.app", "X-Title": "CLIPR"},
+                model=target_model,
+                messages=[
+                    {"role": "system", "content": SYSTEM_PROMPT},
+                    {"role": "user", "content": f"TRANSCRIPT:\n{transcript_text}"}
+                ],
+                response_format={"type": "json_object"} if "gemini" in target_model or "gpt-4o" in target_model else None,
+                extra_body={"reasoning": {"enabled": True}} if "gpt-oss" in target_model or "r1" in target_model else {},
+                temperature=0.1
+            )
+        except Exception as api_err:
+            logger.error(f"API_BRIDGE_COLLAPSE: {str(api_err)}")
+            raise HTTPException(status_code=500, detail=f"AI Bridge Error: {str(api_err)}")
+
         api_end = time.time()
         logger.info(f"SIGNAL_RECEIVED: API_Latency={api_end - api_start:.2f}s")
 
@@ -168,9 +175,11 @@ async def analyze_transcript(
             
         logger.info(f"RECON_COMPLETE: Total_Duration={time.time() - start_time:.2f}s")
         return data
+    except HTTPException:
+        raise
     except Exception as e:
         logger.exception("SYSTEM_CRASH")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=f"INTERNAL_COLLAPSE: {str(e)}")
 
 @app.get("/api/analyze")
 @app.get("/analyze")
