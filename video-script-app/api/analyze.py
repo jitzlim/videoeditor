@@ -128,8 +128,8 @@ async def analyze_transcript(
             
         # Map Gemini Direct to OpenRouter ID if needed
         target_model = model
-        if "gemini-2.0-flash" in model or "gemini-3" in model:
-            target_model = "google/gemini-2.0-flash-exp" # Valid OpenRouter model ID
+        if "gemini-2.0" in model or "gemini-3" in model:
+            target_model = "google/gemini-2.0-flash-001" # Official OpenRouter ID
 
         logger.info(f"SIGNAL_DISPATCH: TargetModel={target_model}")
         api_start = time.time()

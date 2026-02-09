@@ -4,9 +4,9 @@ import ReactMarkdown from 'react-markdown'
 import nexusAvatar from './assets/nexus_avatar.png'
 
 const MODELS = [
-  { id: 'google/gemini-2.0-flash-exp', name: 'GEMINI 2.0 FLASH // KINETIC_SPEED' },
+  { id: 'google/gemini-2.0-flash-001', name: 'GEMINI 2.0 FLASH // KINETIC_SPEED' },
   { id: 'openai/gpt-4o-mini', name: 'GPT-4O MINI // STRATEGIC_REASONING' },
-  { id: 'deepseek/deepseek-r1-0528:free', name: 'DEEPSEEK R1 // NARRATIVE_UNIT (SLOW)' },
+  { id: 'deepseek/deepseek-chat', name: 'DEEPSEEK V3 // NARRATIVE_UNIT' },
 ]
 
 const INTEL_DATA = [
