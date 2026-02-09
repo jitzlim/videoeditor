@@ -103,8 +103,10 @@ def heuristic_json_fix(json_str):
         json_str = json_str.rstrip('}') + ']}' 
     return json_str
 
+@app.post("/api/analyze")
 @app.post("/analyze")
-def analyze_transcript(
+@app.post("/")
+async def analyze_transcript(
     file: UploadFile = File(...),
     model: str = Form("openai/gpt-oss-20b:free")
 ):

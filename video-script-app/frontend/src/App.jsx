@@ -64,17 +64,29 @@ function App() {
       // In production, backend should be on same domain (Vercel serverless functions)
       const apiUrl = import.meta.env.VITE_API_URL ||
         (window.location.hostname === 'localhost' ? 'http://localhost:8000' : '');
-      console.log(`[TACTICAL_RECON] Initiating fetch for model: ${selectedModel} at ${apiUrl || 'same-origin'}`)
-      const response = await fetch(`${apiUrl}/api/analyze`, { method: 'POST', body: formData })
+      const endpoint = `${apiUrl}/api/analyze`;
+      console.log(`[TACTICAL_RECON] Initiating fetch for model: ${selectedModel} at ${endpoint || 'same-origin'}`)
+
+      const response = await fetch(endpoint, { method: 'POST', body: formData })
       console.log(`[TACTICAL_RECON] Status: ${response.status} ${response.statusText}`)
-      const data = await response.json()
+
+      const responseText = await response.text();
+      let data;
+      try {
+        data = JSON.parse(responseText);
+      } catch (e) {
+        console.error(`[TACTICAL_RECON] Failed to parse JSON: ${responseText.substring(0, 100)}`);
+        throw new Error(`Invalid server response (Status ${response.status}). The backend might be misconfigured.`);
+      }
+
       if (response.ok && data.clips) {
         setClips(data.clips)
         setHistory(prev => [{ id: Date.now(), timestamp: new Date().toLocaleTimeString(), filename: file.name, clips: data.clips }, ...prev].slice(0, 15))
       } else {
-        alert(data.detail || "Strategic Analysis Fail")
+        alert(data.detail || `Extraction Fail: ${response.status} ${response.statusText}`)
       }
     } catch (e) {
+      console.error(`[TACTICAL_RECON] Error:`, e);
       alert(`Network Error: ${e.message}`)
     } finally {
       setLoading(false)

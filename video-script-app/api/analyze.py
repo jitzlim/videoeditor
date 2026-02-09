@@ -102,8 +102,10 @@ def heuristic_json_fix(json_str):
         json_str = json_str.rstrip('}') + ']}' 
     return json_str
 
+@app.post("/api/analyze")
 @app.post("/analyze")
-def analyze_transcript(
+@app.post("/")
+async def analyze_transcript(
     file: UploadFile = File(...),
     model: str = Form("openai/gpt-oss-20b:free")
 ):
@@ -170,6 +172,8 @@ def analyze_transcript(
         logger.exception("SYSTEM_CRASH")
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.get("/api/analyze")
+@app.get("/analyze")
 @app.get("/")
 def read_root():
     return {"status": "G3-Enhanced Engine Active // HEARTBEAT_STABLE"}
