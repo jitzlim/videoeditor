@@ -5,7 +5,7 @@ import json
 import logging
 import re
 import time
-from openai import OpenAI
+from anthropic import Anthropic
 
 from google import genai
 from dotenv import load_dotenv
@@ -26,12 +26,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
+ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
 
 # Primary Clients
-client = OpenAI(
-    base_url="https://openrouter.ai/api/v1",
-    api_key=OPENROUTER_API_KEY,
+client = Anthropic(
+    api_key=ANTHROPIC_API_KEY,
     timeout=120.0, # Kill hung connections after 2 minutes
 )
 
@@ -108,7 +107,7 @@ def heuristic_json_fix(json_str):
 @app.post("/")
 async def analyze_transcript(
     file: UploadFile = File(...),
-    model: str = Form("openai/gpt-oss-20b:free")
+    model: str = Form("claude-3-5-sonnet-20241022")
 ):
     start_time = time.time()
     try:
@@ -122,32 +121,31 @@ async def analyze_transcript(
 
         logger.info(f"INITIATING_RECON: Model={model} | Length={len(transcript_text)}")
 
-        # UNIFIED INTELLIGENCE ROUTING (OpenRouter)
-        if not OPENROUTER_API_KEY:
-            raise HTTPException(status_code=500, detail="OpenRouter API Key missing")
-            
-        # Map Gemini Direct to OpenRouter ID if needed
+        # ANTHROPIC API ROUTING
+        if not ANTHROPIC_API_KEY:
+            raise HTTPException(status_code=500, detail="Anthropic API Key missing")
+
+        # Map to Claude model IDs
         target_model = model
-        if "gemini-2.0-flash" in model or "gemini-3" in model:
-            target_model = "google/gemini-2.0-flash-exp" # Valid OpenRouter model ID
+        if "claude" not in model:
+            # Default to Claude 3.5 Sonnet if no Claude model specified
+            target_model = "claude-3-5-sonnet-20241022"
 
         logger.info(f"SIGNAL_DISPATCH: TargetModel={target_model}")
         api_start = time.time()
-        response = client.chat.completions.create(
-            extra_headers={"HTTP-Referer": "https://clipr.vercel.app", "X-Title": "CLIPR"},
+        response = client.messages.create(
             model=target_model,
+            max_tokens=4096,
+            temperature=0.1,
+            system=SYSTEM_PROMPT,
             messages=[
-                {"role": "system", "content": SYSTEM_PROMPT},
                 {"role": "user", "content": f"TRANSCRIPT:\n{transcript_text}"}
-            ],
-            response_format={"type": "json_object"} if "gemini" in target_model or "gpt-4o" in target_model else None,
-            extra_body={"reasoning": {"enabled": True}} if "gpt-oss" in target_model or "r1" in target_model else {},
-            temperature=0.1
+            ]
         )
         api_end = time.time()
         logger.info(f"SIGNAL_RECEIVED: API_Latency={api_end - api_start:.2f}s")
 
-        raw_output = response.choices[0].message.content or ""
+        raw_output = response.content[0].text if response.content else ""
         clean_output = re.sub(r'<think>.*?</think>', '', raw_output, flags=re.DOTALL).strip()
         json_match = re.search(r'```json\s*(\{.*?\})\s*```', clean_output, re.DOTALL)
         if not json_match:
