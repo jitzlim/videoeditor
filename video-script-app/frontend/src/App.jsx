@@ -4,8 +4,8 @@ import ReactMarkdown from 'react-markdown'
 import nexusAvatar from './assets/nexus_avatar.png'
 
 const MODELS = [
-  { id: 'claude-3-5-sonnet-20241022', name: 'CLAUDE 3.5 SONNET // STRATEGIC_REASONING' },
-  { id: 'claude-3-5-haiku-20241022', name: 'CLAUDE 3.5 HAIKU // KINETIC_SPEED' },
+  { id: 'claude-3-haiku-20240307', name: 'CLAUDE 3 HAIKU // KINETIC_SPEED' },
+  { id: 'claude-3-sonnet-20240229', name: 'CLAUDE 3 SONNET // STRATEGIC_REASONING' },
   { id: 'claude-3-opus-20240229', name: 'CLAUDE 3 OPUS // DEEP_ANALYSIS' },
 ]
 

@@ -106,7 +106,7 @@ def heuristic_json_fix(json_str):
 @app.post("/")
 async def analyze_transcript(
     file: UploadFile = File(...),
-    model: str = Form("claude-3-5-sonnet-20241022")
+    model: str = Form("claude-3-haiku-20240307")
 ):
     start_time = time.time()
     try:
@@ -128,8 +128,8 @@ async def analyze_transcript(
         # Map to Claude model IDs
         target_model = model
         if "claude" not in model:
-            # Default to Claude 3.5 Sonnet if no Claude model specified
-            target_model = "claude-3-5-sonnet-20241022"
+            # Default to Claude 3 Haiku if no Claude model specified
+            target_model = "claude-3-haiku-20240307"
 
         logger.info(f"SIGNAL_DISPATCH: TargetModel={target_model}")
         api_start = time.time()
