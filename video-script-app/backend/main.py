@@ -133,15 +133,30 @@ async def analyze_transcript(
 
         logger.info(f"SIGNAL_DISPATCH: TargetModel={target_model}")
         api_start = time.time()
-        response = client.messages.create(
-            model=target_model,
-            max_tokens=4096,
-            temperature=0.1,
-            system=SYSTEM_PROMPT,
-            messages=[
-                {"role": "user", "content": f"TRANSCRIPT:\n{transcript_text}"}
-            ]
-        )
+
+        # Retry logic for API overload errors
+        max_retries = 3
+        retry_delay = 2
+        for attempt in range(max_retries):
+            try:
+                response = client.messages.create(
+                    model=target_model,
+                    max_tokens=4096,
+                    temperature=0.1,
+                    system=SYSTEM_PROMPT,
+                    messages=[
+                        {"role": "user", "content": f"TRANSCRIPT:\n{transcript_text}"}
+                    ]
+                )
+                break
+            except Exception as e:
+                if "overloaded" in str(e).lower() and attempt < max_retries - 1:
+                    logger.warning(f"API_OVERLOAD: Retry {attempt + 1}/{max_retries} after {retry_delay}s")
+                    time.sleep(retry_delay)
+                    retry_delay *= 2  # Exponential backoff
+                else:
+                    raise
+
         api_end = time.time()
         logger.info(f"SIGNAL_RECEIVED: API_Latency={api_end - api_start:.2f}s")
 
